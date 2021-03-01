@@ -28,7 +28,7 @@ if R.get("{}:Nbot:restart".format(BOT_ID)):
   R.delete("{}:Nbot:restart".format(BOT_ID))
   
   
-t = threading.Thread(target=Del24,args=("client", "message",R))
+t = threading.Thread(target=Del24,args=("clieont", "message",R))
 t.daemon = True
 t.start()
 
