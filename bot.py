@@ -28,7 +28,7 @@ if R.get("{}:Nbot:restart".format(BOT_ID)):
   R.delete("{}:Nbot:restart".format(BOT_ID))
   
   
-t = threading.Thread(target=Del24,args=("clont", "message",R))
+t = threading.Thread(target=Del24,args=("clonsft", "message",R))
 t.daemon = True
 t.start()
 
