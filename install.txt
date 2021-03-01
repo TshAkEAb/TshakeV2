@@ -1,9 +1,4 @@
-echo -e "\e[96m____________________
-\__    ___/   _____/
-  |    |  \_____  \ 
-  |    |  /        \
-  |____| /_______  /
-                 \/\e[0m"
+echo -e "\e[96m____________________\n\__    ___/   _____/\n  |    |  \_____  \ \n  |    |  /        \\n  |____| /_______  /\n                 \/\e[0m"
 echo -n "Downloading python3.7.." 
 sudo apt-get update -y &>/dev/null
 sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
