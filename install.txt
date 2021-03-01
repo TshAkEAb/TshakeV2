@@ -1,12 +1,9 @@
-echo -e "\e[96m _     _   ______  
-| \   | | |  ___ \ 
-|  \  | | | |   | )
-|   \ | | | |__/ / 
-| |\ \| | |  __ (  
-| | \   | | |  \ \ 
-| |  \  | | |___) )
-|_|   \_| |______/ \e[0m
-"
+echo -e "\e[96m  ___  ___   ___  ___   ___ 
+`._|=|   |=|_.' |   |=|_.' 
+     |   |      `.  |      
+     |   |        `.|=|`.  
+     `.  |       ___  |  `.
+       `.|       `._|=|___|\e[0m"
 
 echo -n "Downloading python3.7.." 
 
@@ -36,10 +33,9 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - &>/dev/null; sudo a
 
 echo -e "\rDone download pm2"
 
-echo -n "Downloading NewBot.." 
+echo -n "Downloading Tshake Source.." 
 
 git clone https://github.com/NewBotMD/NB.git &>/dev/null
-git clone https://github.com/NewBotMD/NewBot-lang.git &>/dev/null;sudo cp -R NewBot-lang/lang NB/lang/; rm -rf NewBot-lang
 
-echo -e "\rDone download NewBot"
+echo -e "\rDone Tshake Source"
 echo
