@@ -27,3 +27,4 @@ echo -n "Downloading Tshake Source.."
 git clone https://github.com/TshAkEAb/TshakeV2.git &>/dev/null
 echo -e "\rDone Tshake Source"
 echo
+cd TshakeV2;python3.7 setup.py
