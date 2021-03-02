@@ -6,7 +6,7 @@ from config import *
 from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re, json,datetime,os
 import importlib
-
+from collections import defaultdict
 from utlis.send import run
 
 from os import listdir
@@ -73,6 +73,11 @@ def sudo(client, message,redis):
 
 
 	if text and (type is "supergroup" or type is "group"):
+		if rank == "sudo":
+			if text == "وضع مجموعه المطور":
+				redis.set("{}Nbot:sudogp".format(BOT_ID),chatID)
+				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحديد المجموعه لاستلام الاشعارات \n{title} {chatID}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+
 		if re.search(c.leaveChatS, text) and redis.get("{}Nbot:leaveaddbot".format(BOT_ID)) :
 			Bot("leaveChat",{"chat_id":chatID})
 			redis.srem("{}Nbot:groups".format(BOT_ID),chatID)
@@ -134,6 +139,54 @@ def sudo(client, message,redis):
 
 	if text and (type is "private" or (type is "supergroup" or type is "group")) :
 		if rank == "sudo":
+			if re.search("^رفع نسخه احتياطيه$|^رفع نسخة احتياطية$", text):
+				msgID = Bot("sendMessage",{"chat_id":chatID,"text":"انتظر قليلاً يتم تحميل الملف ℹ️","reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})["result"]["message_id"]
+				fileName = message.reply_to_message.download()
+				JsonDate = json.load(open(fileName))
+				if int(JsonDate["BOT_ID"]) != int(BOT_ID):
+					Bot("editMessageText",{"chat_id":chatID,"text":"عذراً هذه الملف ليس لي ⚠️","message_id":msgID,"disable_web_page_preview":True,"parse_mode":"html"})
+					return 0
+				co = len(JsonDate["group"])
+				Bot("editMessageText",{"chat_id":chatID,"text":f"تم ايجاد {co} مجموعه في الملف ℹ️","message_id":msgID,"disable_web_page_preview":True,"parse_mode":"html"})
+				for chatid in JsonDate["group"].keys():
+					redis.sadd("{}Nbot:groups".format(BOT_ID),chatid)
+					for rk in JsonDate["group"][chatid].keys():
+						if rk == "malk":
+							setrank(redis,rk,JsonDate["group"][chatid][rk],chatid,"one")
+						else:
+							for userId in JsonDate["group"][chatid][rk]:
+								setrank(redis,rk,userId,chatid,"array")
+				Bot("editMessageText",{"chat_id":chatID,"text":f"تم رفع المجموعات ✅","message_id":msgID,"disable_web_page_preview":True,"parse_mode":"html"})
+
+
+			if re.search("^جلب نسخه احتياطيه$|^جلب نسخة احتياطية$", text):
+				JsonSave = defaultdict(list)
+				JsonSave["BOT_ID"] = BOT_ID
+				JsonSave["group"] = {}
+				gps = redis.smembers("{}Nbot:groups".format(BOT_ID))
+				for gp in gps:
+					JsonSave["group"][gp] = {}
+					malk_userid = redis.get("{}Nbot:{}:malk".format(BOT_ID,gp))
+					if malk_userid:
+						JsonSave["group"][gp]["malk"] = int(malk_userid)
+					ranks_ar = {"acreator","creator","owner","admin"}
+					for rk in ranks_ar:
+						get = redis.smembers(f"{BOT_ID}Nbot:{gp}:{rk}")
+						if get:
+							JsonSave["group"][gp][rk] = {}
+							user_ids = []
+							for userid in get:
+								user_ids.append(int(userid))
+							JsonSave["group"][gp][rk] = user_ids
+
+				with open(f'{userID}.json', 'w') as fp:
+					json.dump(JsonSave, fp)
+				da = datetime.datetime.now().strftime("%Y-%m-%d")
+				message.reply_document(f'{userID}.json',caption=f"عدد المجموعات 💬 : {len(gps)}\nتاريخ النسخه 📆 : {da}\n⎯ ⎯ ⎯ ⎯")
+			if text == "حذف مجموعه المطور":
+				redis.delete("{}Nbot:sudogp".format(BOT_ID))
+				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل الاشعارات الى الخاص","reply_to_message_id":message.message_id,"parse_mode":"html"})
+
 			if re.search("^تحويل الاساسي$|^تحويل الاساسي @(.*)$|^تحويل الاساسي [0-9]+$", text):
 				if re.search("@",text):
 					user = text.split("@")[1]
@@ -168,7 +221,7 @@ def sudo(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
 			else:
 				redis.hset("{}Nbot:stepSUDO".format(BOT_ID),userID,tx)
-				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/nbbot")]])
+				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Sendreply % tx,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
 			
 
@@ -225,7 +278,7 @@ def sudo(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Files,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
 
 			if text == c.ADDfiles:
-				url = "https://raw.githubusercontent.com/NewBotMD/NB-files/master/files"
+				url = "https://raw.githubusercontent.com/TshAkEAb/TshakeV2-files/master/files"
 				req = requests.get(url).text
 				if not re.search(".py",req):
 					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles,"reply_to_message_id":message.message_id,"disable_web_page_preview":True,"parse_mode":"html"})
@@ -245,19 +298,19 @@ def sudo(client, message,redis):
 				Files_U = ["tg.py","locks.py","rank.py","send.py"]
 				Files_B = ["bot.py","setup.py"]
 				for fnh in Files_H:
-					url = "https://raw.githubusercontent.com/NewBotMD/NB/master/handlers/"+fnh
+					url = "https://raw.githubusercontent.com/TshAkEAb/TshakeV2/master/handlers/"+fnh
 					out = requests.get(url).text
 					f = open("./handlers/"+fnh,"w+")
 					f.write(out)
 					f.close()
 				for fnu in Files_U:
-					url = "https://raw.githubusercontent.com/NewBotMD/NB/master/utlis/"+fnu
+					url = "https://raw.githubusercontent.com/TshAkEAb/TshakeV2/master/utlis/"+fnu
 					out = requests.get(url).text
 					f = open("./utlis/"+fnu,"w+")
 					f.write(out)
 					f.close()
 				for fnb in Files_B:
-					url = "https://raw.githubusercontent.com/NewBotMD/NB/master/"+fnb
+					url = "https://raw.githubusercontent.com/TshAkEAb/TshakeV2/master/"+fnb
 					out = requests.get(url).text
 					f = open("./"+fnb,"w+")
 					f.write(out)
@@ -265,14 +318,6 @@ def sudo(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Wres,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 				run(redis,chatID)
 				
-
-			# if text == c.Ulang:
-			# 	t = r.Dulang
-			# 	t2 = r.Wres
-			# 	os.system("rm -rf lang;git clone https://github.com/NewBotMD/NewBot-lang.git;sudo cp -R NewBot-lang/lang lang/; rm -rf NewBot-lang")
-			# 	Bot("sendMessage",{"chat_id":chatID,"text":t,"reply_to_message_id":message.message_id,"parse_mode":"html"})
-			# 	Bot("sendMessage",{"chat_id":chatID,"text":t2,"reply_to_message_id":message.message_id,"parse_mode":"html"})
-			# 	run(redis,chatID)
 			if re.search(c.setSudoC, text):
 				tx = text.replace(c.RsetSudoC,"")
 				v = Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
@@ -387,10 +432,6 @@ def sudo(client, message,redis):
 				except Exception as e:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 			
-
-
-
-
 
 			if re.search(c.banall, text):
 				if re.search("@",text):
