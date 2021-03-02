@@ -315,6 +315,26 @@ def gpcmd(client, message,redis):
         Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
     
     if rank != "admin":
+
+      if re.search(c.setname, text):
+        name = text.replace(c.Dsetname,"")
+        Bot("setChatTitle",{"chat_id":chatID,"title":name})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetname.format(name),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+      if re.search(c.setabout, text):
+        about = text.replace(c.Dsetabout,"")
+        Bot("setChatDescription",{"chat_id":chatID,"description":about})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetabout.format(about),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+      if re.search(c.setphoto, text) and message.reply_to_message and message.reply_to_message.photo:
+        ID = message.reply_to_message.photo.file_id
+        client.set_chat_photo(chat_id=chatID,photo=ID)
+        Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetphoto,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+      if re.search("^حذف الصورة$|^حذف الصوره$", text):
+        client.delete_chat_photo(chat_id=chatID)
+        Bot("sendMessage",{"chat_id":chatID,"text":"☑️꒐ تم حذف صورة المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
+      
       if re.search("^الاوامر المضافه$",text):
         tx = "الاوامر المضافه ℹ️:\n"
         x = redis.smembers("{}Nbot:{}:TXoeders".format(BOT_ID,chatID))
@@ -557,7 +577,7 @@ __italic__
           Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         else:
           redis.hset("{}Nbot:step".format(BOT_ID),userID,tx)
-          kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/nbbot")]])
+          kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
           Bot("sendMessage",{"chat_id":chatID,"text":r.Sendreply % tx,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
 
       if re.search(c.DLreply, text):
@@ -576,25 +596,7 @@ __italic__
           Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         else:
           Bot("sendMessage",{"chat_id":chatID,"text":r.Norp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
-    if re.search(c.setname, text):
-      name = text.replace(c.Dsetname,"")
-      Bot("setChatTitle",{"chat_id":chatID,"title":name})
-      Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetname.format(name),"reply_to_message_id":message.message_id,"parse_mode":"html"})
 
-    if re.search(c.setabout, text):
-      about = text.replace(c.Dsetabout,"")
-      Bot("setChatDescription",{"chat_id":chatID,"description":about})
-      Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetabout.format(about),"reply_to_message_id":message.message_id,"parse_mode":"html"})
-
-    if re.search(c.setphoto, text) and message.reply_to_message and message.reply_to_message.photo:
-      ID = message.reply_to_message.photo.file_id
-      client.set_chat_photo(chat_id=chatID,photo=ID)
-      Bot("sendMessage",{"chat_id":chatID,"text":r.Dsetphoto,"reply_to_message_id":message.message_id,"parse_mode":"html"})
-
-    if re.search("^حذف الصورة$|^حذف الصوره$", text):
-      client.delete_chat_photo(chat_id=chatID)
-      Bot("sendMessage",{"chat_id":chatID,"text":"☑️꒐ تم حذف صورة المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
-    
 
 
     if re.search(c.pinmsg, text) and message.reply_to_message:
