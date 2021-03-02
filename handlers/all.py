@@ -113,7 +113,9 @@ def allGP(client, message,redis):
       #   Bot("sendMessage",{"chat_id":chatID,"text":r.RID.format(userID),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":reply_markup})
 
 
-
+    if text == "رتبتي":
+      t = IDrank(redis,userID,chatID,r)
+      Bot("sendMessage",{"chat_id":chatID,"text":f"⏏️꒐ موقعك : {t}","reply_to_message_id":message.message_id,"parse_mode":"html"})
     if text == c.ID and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID) and message.reply_to_message:
       us = message.reply_to_message.from_user.id
       rusername = message.reply_to_message.from_user.username
@@ -167,10 +169,10 @@ def allGP(client, message,redis):
       if redis.hexists("{}Nbot:TXreplys".format(BOT_ID),text):
         tx = redis.hget("{}Nbot:TXreplys".format(BOT_ID),text)
         try:
-          rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
+          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
-          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(name=Name(userFN),username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         except Exception as e:
           Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
           
@@ -200,10 +202,10 @@ def allGP(client, message,redis):
       if redis.hexists("{}Nbot:{}:TXreplys".format(BOT_ID,chatID),text):
         tx = redis.hget("{}Nbot:{}:TXreplys".format(BOT_ID,chatID),text)
         try:
-          rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
+          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
-          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(name=Name(userFN),username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         except Exception as e:
           Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 
