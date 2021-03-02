@@ -281,11 +281,11 @@ def GPck(c,m,redis):
     f = open("./handlers/"+fi,"r") 
     y = f.read() 
     f.close()
-    out = re.findall("nbbot",y)
+    out = re.findall("zx_xx",y)
     outJ = re.findall("Ckuser",y)
     iN += len(out)
     iJ += len(outJ)
-  if iN != 11 or iJ != 45:
+  if iN != 13 or iJ != 45:
     redis.set("{}Nbot:bigM".format(BOT_ID),"ya")
 def st_res(client, message,redis,type = 1):
   userID = message.from_user.id
