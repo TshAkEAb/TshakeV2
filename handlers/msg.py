@@ -1,5 +1,5 @@
 from utlis.rank import setrank ,isrank ,remrank ,setsudos ,remsudos ,setsudo,IDrank,GPranks
-from utlis.send import send_msg, BYusers, sendM,Glang
+from utlis.send import send_msg, BYusers, sendM,Glang,GetLink
 from handlers.delete import delete
 from utlis.tg import Bot, Ckuser
 from handlers.ranks import ranks
@@ -17,9 +17,11 @@ def updateHandlers(client, message,redis):
 	if redis.get("{}Nbot:bigM".format(BOT_ID)):
 		return False
 	type = message.chat.type
-	userID = message.from_user.id
-	chatID = message.chat.id
-
+	try:
+		userID = message.from_user.id
+		chatID = message.chat.id
+	except Exception as e:
+		return 0
 	c = importlib.import_module("lang.arcmd")
 	r = importlib.import_module("lang.arreply")
 
@@ -59,9 +61,13 @@ def updateHandlers(client, message,redis):
 							setrank(redis,"malk",userId,chatID,"one")
 					add = redis.sadd("{}Nbot:groups".format(BOT_ID),chatID)
 					Bot("exportChatInviteLink",{"chat_id":chatID})
-					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/nbbot")]])
+					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
 					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
-
+					sendTO = (redis.get("{}Nbot:sudogp".format(BOT_ID)) or SUDO)
+					get = (redis.hget("{}Nbot:links".format(BOT_ID),chatID) or GetLink(chatID) or "https://t.me/zx_xx")
+					kb = InlineKeyboardMarkup([[InlineKeyboardButton("الرابط 🖇", url=get)]])
+					BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,message.from_user.first_name)
+					Bot("sendMessage",{"chat_id":sendTO,"text":f"تم تفعيل مجموعه جديدة ℹ️\nاسم المجموعه : {title}\nايدي المجموعه : {chatID}\nالمنشئ : {BY}\n⎯ ⎯ ⎯ ⎯","parse_mode":"html","reply_markup":kb})
 				elif text == c.add and redis.sismember("{}Nbot:disabledgroups".format(BOT_ID),chatID)  and Ckuser(message):
 					redis.sadd("{}Nbot:groups".format(BOT_ID),chatID)
 					redis.srem("{}Nbot:disabledgroups".format(BOT_ID),chatID)
@@ -80,7 +86,7 @@ def updateHandlers(client, message,redis):
 					redis.sadd("{}Nbot:disabledgroups".format(BOT_ID),chatID)
 					NextDay_Date = datetime.datetime.today() + datetime.timedelta(days=1)
 					redis.hset("{}Nbot:disabledgroupsTIME".format(BOT_ID),chatID,str(NextDay_Date))
-					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/nbbot")]])
+					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
 					Bot("sendMessage",{"chat_id":chatID,"text":r.disabl.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
 		if  group is True:
 			t = threading.Thread(target=allGP,args=(client, message,redis))
@@ -130,14 +136,14 @@ def updateHandlers(client, message,redis):
 			userID = message.from_user.id
 			userFN = message.from_user.first_name
 			redis.sadd("{}Nbot:privates".format(BOT_ID),userID)
+			if rank == "sudo":
+				kb = ReplyKeyboardMarkup([[r.RKgp, r.RKgpl],[r.RKaf, r.RKrf],[r.RKf],["جلب نسخه احتياطيه"],[r.RKub]],resize_keyboard=True)
+				Bot("sendMessage",{"chat_id":chatID,"text":r.sudostart,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+				return 0
 			getbot = client.get_me()
-			kb = InlineKeyboardMarkup([[InlineKeyboardButton("NewBot", url="t.me/nbbot")]])
+			kb = InlineKeyboardMarkup([[InlineKeyboardButton("TshakeTeam", url="t.me/zx_xx")]])
 			Bot("sendMessage",{"chat_id":chatID,"text":r.botstart.format(getbot.first_name,getbot.username),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
-		
-		if text and re.search("^/help$",text) and rank == "sudo":
-			kb = ReplyKeyboardMarkup([[r.RKgp, r.RKgpl],[r.RKaf, r.RKrf],[r.RKf],[r.RKub],],resize_keyboard=True)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.sudostart,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
-
+			
 		if text and re.search("^/start (.*)$",text):
 			tx = text.replace("/start ","")
 			split = tx.split("=")
