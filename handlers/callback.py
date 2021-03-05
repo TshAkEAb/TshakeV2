@@ -339,7 +339,7 @@ def updateCallback(client, callback_query,redis):
       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showBlocklist","",userID])),InlineKeyboardButton(c.STgifs,url="https://telegram.me/{}?start=showBlocklist={}={}={}".format(Botuser,chatID,userID,"blockanimations")),],[InlineKeyboardButton(c.STphoto,url="https://telegram.me/{}?start=showBlocklist={}={}={}".format(Botuser,chatID,userID,"blockphotos")),InlineKeyboardButton(c.STsticker,url="https://telegram.me/{}?start=showBlocklist={}={}={}".format(Botuser,chatID,userID,"blockSTICKERs")),]])
       Bot("editMessageText",{"chat_id":chatID,"text":r.blocklist.format(r.blocklist2,title),"message_id":message_id,"parse_mode":"html","reply_markup":reply_markup})
     if date[0] == "replylist":
-      reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylist","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylist","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylist","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylist","",userID])),]])
+      reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylist","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylist","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylist","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylist","",userID])),],[InlineKeyboardButton("Mp3",callback_data=json.dumps(["showAUreplylist","",userID]))]])
       Bot("editMessageText",{"chat_id":chatID,"text":r.blocklist.format(r.replylist,title),"message_id":message_id,"parse_mode":"html","reply_markup":reply_markup})
     if date[0] == "replylistBOT":
       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylistBOT","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylistBOT","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylistBOT","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylistBOT","",userID])),]])
@@ -414,6 +414,25 @@ def updateCallback(client, callback_query,redis):
       else:
         reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("<<",callback_data=json.dumps(["replylist","",userID])),]])
         Bot("editMessageText",{"chat_id":chatID,"text":r.replylistEm,"message_id":message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
+
+    if date[0] == "showAUreplylist":
+      li = redis.hkeys("{}Nbot:{}:AUreplys".format(BOT_ID,chatID))
+      if li:
+        words = ""
+        i = 1
+        for word in li:
+          words = words+"\n"+str(i)+" - {"+word+"}"
+          i += 1
+        if len(words) > 3000:
+          Botuser = client.get_me().username
+          reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(r.clickTOpv,url="https://telegram.me/{}?start=showreplylist={}={}={}".format(Botuser,chatID,userID,"STreplys")),],[InlineKeyboardButton("<<",callback_data=json.dumps(["replylist","",userID])),]])
+          Bot("editMessageText",{"chat_id":chatID,"text":r.Toolong,"message_id":message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
+        else:
+          reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📂꒐ قائمة الصوتيات فارغة",callback_data=json.dumps(["delSTreplys","kb",userID])),],[InlineKeyboardButton("<<",callback_data=json.dumps(["replylist","",userID])),]])
+          Bot("editMessageText",{"chat_id":chatID,"text":words,"message_id":message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
+      else:
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("<<",callback_data=json.dumps(["replylist","",userID])),]])
+        Bot("editMessageText",{"chat_id":chatID,"text":"📂꒐ قائمة الصوتيات فارغة","message_id":message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
 
 
     if date[0] == "showSTreplylist":
