@@ -57,7 +57,14 @@ def gpcmd(client, message,redis):
       redis.hset("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),tx,ID)
       redis.hdel("{}Nbot:step".format(BOT_ID),userID)
       Bot("sendMessage",{"chat_id":chatID,"text":r.SRvo.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+    if message.audio:
+      ID = message.audio.file_id
+      redis.hset("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),tx,ID)
+      redis.hdel("{}Nbot:step".format(BOT_ID),userID)
+      Bot("sendMessage",{"chat_id":chatID,"text":r.SRvo.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
     
+      
     if message.photo:
       ID = message.photo.file_id
       redis.hset("{}Nbot:{}:PHreplys".format(BOT_ID,chatID),tx,ID)
