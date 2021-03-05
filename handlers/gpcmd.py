@@ -292,7 +292,69 @@ def gpcmd(client, message,redis):
 
       except Exception as e:
         Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        
+        
+        
 
+
+    if re.search(c.unmute, text):
+      if re.search("@",text):
+        user = text.split("@")[1]
+      if re.search(c.unmute2,text):
+        user = text.split(" ")[1]
+      if message.reply_to_message:
+        user = message.reply_to_message.from_user.id
+      if 'user' not in locals():return False
+      try:
+        getUser = client.get_users(user)
+        userId = getUser.id
+        userFn = getUser.first_name
+        Getrank = isrank(redis,userId,chatID)
+        if Getrank == "bot":return False
+        if (Getrank is False or Getrank is 0):
+          BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
+          if not redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userId):
+            Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ غير مكتوم من المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
+          else:
+            redis.srem(f"{BOT_ID}Nbot:{chatID}:muteusers",userId)
+            Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ تم الغاء كتمه من المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
+        else:
+          Bot("sendMessage",{"chat_id":chatID,"text":r.haveRank.format(Grank((Getrank or GetGprank),r)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      except Exception as e:
+        Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+
+    if re.search(c.mute, text):
+      if re.search("@",text):
+        user = text.split("@")[1]
+      if re.search(c.mute2,text):
+        user = int(re.search(r'\d+', text).group())
+      if message.reply_to_message:
+        user = message.reply_to_message.from_user.id
+      if 'user' not in locals():return False
+      try:
+        getUser = client.get_users(user)
+        userId = getUser.id
+        userFn = getUser.first_name
+        Getrank = isrank(redis,userId,chatID)
+        Getrank = isrank(redis,userId,chatID)
+        if Getrank == "bot":return False
+        if (Getrank is False or Getrank is 0):
+          BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
+          if redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userId):
+            Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ بالفعل مكتوم من المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
+          else:
+            redis.sadd(f"{BOT_ID}Nbot:{chatID}:muteusers",userId)
+            Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ تم كتمه من المجموعة","reply_to_message_id":message.message_id,"parse_mode":"html"})
+        else:
+          Bot("sendMessage",{"chat_id":chatID,"text":r.haveRank.format(Grank((Getrank or GetGprank),r)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      except Exception as e:
+        Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+
+        
+        
+        
     if re.search(c.unTK, text):
       if re.search("@",text):
         user = text.split("@")[1]
