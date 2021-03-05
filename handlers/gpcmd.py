@@ -626,7 +626,7 @@ __italic__
         Bot("sendMessage",{"chat_id":chatID,"text":r.blocklist.format(r.blocklist2,title),"reply_to_message_id":message.message_id,"reply_markup":reply_markup})
 
       if re.search(c.Replylist, text):
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylist","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylist","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylist","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylist","",userID])),]])
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylist","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylist","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylist","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylist","",userID])),],[InlineKeyboardButton("Mp3",callback_data=json.dumps(["showAUreplylist","",userID]))]])
         Bot("sendMessage",{"chat_id":chatID,"text":r.blocklist.format(text,title),"reply_to_message_id":message.message_id,"reply_markup":reply_markup})
 
       if re.search(c.FloodT, text):
@@ -654,6 +654,8 @@ __italic__
         elif redis.hexists("{}Nbot:{}:GFreplys".format(BOT_ID,chatID),tx):
           Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         elif redis.hexists("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),tx):
+          Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        elif redis.hexists("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),tx):
           Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         else:
           redis.hset("{}Nbot:step".format(BOT_ID),userID,tx)
