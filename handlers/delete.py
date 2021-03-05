@@ -26,7 +26,8 @@ def delete(client, message,redis):
             "can_send_polls": 0,"can_change_info": 0,"can_add_web_page_previews": 0,"can_pin_messages": 0,"can_invite_users": 0,})
   if redis.sismember("{}Nbot:bans".format(BOT_ID),userID):
     Bot("kickChatMember",{"chat_id":chatID,"user_id":userID})
-
+  if redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userID) and (rank is False or rank is 0):
+    message.delete()
   if text :
     if text == c.kickme and not redis.sismember("{}Nbot:kickme".format(BOT_ID),chatID):
       GetGprank = GPranks(userID,chatID)
