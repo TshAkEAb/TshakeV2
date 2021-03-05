@@ -101,6 +101,20 @@ def gpcmd(client, message,redis):
         redis.srem("{}Nbot:{}:bans".format(BOT_ID,chatID),user)
       Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"disable_web_page_preview":True})
 
+    if re.search(c.del_mutes,text):
+      redis.delete(f"{BOT_ID}Nbot:{chatID}:muteusers")
+      Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"disable_web_page_preview":True})
+    if re.search(c.mutes, text):
+      arrays = redis.smembers("{}Nbot:{}:muteusers".format(BOT_ID,chatID))
+      b = BYusers(arrays,chatID,redis,client)
+      kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","muteusers",userID]))]])
+      if  b is not "":
+        Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+      else:
+        Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+
+      
+      
     if re.search(c.del_restricteds,text):
       arrays = redis.smembers("{}Nbot:{}:restricteds".format(BOT_ID,chatID))
       for user in arrays:
