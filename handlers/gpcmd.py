@@ -688,7 +688,10 @@ __italic__
           redis.hdel("{}Nbot:{}:GFreplys".format(BOT_ID,chatID),tx)
           Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         elif redis.hexists("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),tx):
-          redis.hdel("{}Nbot:{}:GFreplys".format(BOT_ID,chatID),tx)
+          redis.hdel("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),tx)
+          Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        elif redis.hexists("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),tx):
+          redis.hdel("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),tx)
           Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
         else:
           Bot("sendMessage",{"chat_id":chatID,"text":r.Norp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
