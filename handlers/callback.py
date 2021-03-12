@@ -84,6 +84,10 @@ def updateCallback(client, callback_query,redis):
       redis.delete("{}Nbot:{}:{}".format(BOT_ID,chat,Hash))
       Bot("editMessageText",{"chat_id":chatID,"text":r.DoneDelList,"message_id":message_id,"disable_web_page_preview":True})
   if re.search("del(.*)replys$",date[0]):
+    if int(date[3]) != userID:
+      Bot("answerCallbackQuery",{"callback_query_id":callback_query.id,"text":r.notforyou,"show_alert":True})
+      redis.setex("{}Nbot:{}:floodClick".format(BOT_ID,userID), 3, User_click+1)
+      return 0
     t = date[0].replace("del","")
     if date[1] != "kb":
       redis.delete("{}Nbot:{}:{}".format(BOT_ID,date[1],t))
