@@ -554,12 +554,16 @@ __italic__
           # print("ssssssssss")
           # tx = text.replace(c.RsetIDC,"")
           tx = re.findall(c.setIDC,text)[0][1]
+          rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
+          for v in rep.keys():
+            tx = tx.replace(v,rep[v])
+            
           t = IDrank(redis,userID,chatID,r)
           msgs = (redis.hget("{}Nbot:{}:msgs".format(BOT_ID,chatID),userID) or 0)
           edits = (redis.hget("{}Nbot:{}:edits".format(BOT_ID,chatID),userID) or 0)
           rate = int(msgs)*100/20000
           age = getAge(userID,r)
-          v = Bot("sendMessage",{"chat_id":chatID,"text":tx.format(us=("@"+username or "None"),id=userID,rk=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          v = Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+username or "None"),id=userID,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
           if v["ok"]:
             redis.hset("{}Nbot:SHOWid".format(BOT_ID),chatID,tx)
             Bot("sendMessage",{"chat_id":chatID,"text":r.DsetIDShow,"reply_to_message_id":message.message_id,"parse_mode":"html"})
