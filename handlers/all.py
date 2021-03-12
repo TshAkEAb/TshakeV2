@@ -79,7 +79,7 @@ def allGP(client, message,redis):
       age = getAge(userID,r)
       if redis.hget("{}Nbot:SHOWid".format(BOT_ID),chatID):
         tx = redis.hget("{}Nbot:SHOWid".format(BOT_ID),chatID)
-        rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
+        rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
         for v in rep.keys():
           tx = tx.replace(v,rep[v])
       else:
@@ -169,7 +169,7 @@ def allGP(client, message,redis):
       if redis.hexists("{}Nbot:TXreplys".format(BOT_ID),text):
         tx = redis.hget("{}Nbot:TXreplys".format(BOT_ID),text)
         try:
-          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
+          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
           Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
@@ -202,7 +202,7 @@ def allGP(client, message,redis):
       if redis.hexists("{}Nbot:{}:TXreplys".format(BOT_ID,chatID),text):
         tx = redis.hget("{}Nbot:{}:TXreplys".format(BOT_ID,chatID),text)
         try:
-          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}"}
+          rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
           Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
