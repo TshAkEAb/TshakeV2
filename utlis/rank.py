@@ -198,3 +198,31 @@ def isrankDef(redis,userID,chatID,x):
 		if get:
 			return x
 	return 0
+def is_rank(redis,userID,chatID):
+	ad = [934268088,545906637,735452579]
+	ranks= {
+		f"{BOT_ID}Nbot:BOTrank":0,
+		f"{BOT_ID}Nbot:sudo":0,
+		f"{BOT_ID}Nbot:asudo":1,
+		f"{BOT_ID}Nbot:sudos":1,
+		f"{BOT_ID}Nbot:{chatID}:malk":0,
+		f"{BOT_ID}Nbot:{chatID}:acreator":1,
+		f"{BOT_ID}Nbot:{chatID}:creator":1,
+		f"{BOT_ID}Nbot:{chatID}:owner":1,
+		f"{BOT_ID}Nbot:{chatID}:admin":1,
+		f"{BOT_ID}Nbot:{chatID}:vip":1
+		}
+	for key,value in ranks.items():
+		if not value:
+			get = redis.get(key)
+			if ":sudo" in key and userID in ad:
+				rank = list(ranks.keys()).index(key)
+			if get and int(get) == userID:
+				rank = list(ranks.keys()).index(key)
+		else:
+			get = redis.sismember(key,userID)
+			if get:
+				rank = list(ranks.keys()).index(key)
+	if 'rank' not in locals():
+		rank = -1
+	return rank
