@@ -94,6 +94,16 @@ def updateHandlers(client, message,redis):
 			t.start()
 
 		if text and group is True:
+			if redis.sismember("{}Nbot:publicOrders".format(BOT_ID),chatID):
+				x = redis.smembers("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID))
+				for x in x:
+					try:
+						x = x.split("=")
+						if re.search(f"^\{x[0]}$", text) or re.search(f"^\{x[0]} (.*)$", text):
+							text = text.replace(x[0], x[1])
+					except Exception as e:
+						print(e)
+				message.text = text
 			x = redis.smembers("{}Nbot:{}:TXoeders".format(BOT_ID,chatID))
 			for x in x:
 				try:
@@ -103,6 +113,7 @@ def updateHandlers(client, message,redis):
 				except Exception as e:
 					print(e)
 			message.text = text
+
 		if (rank is "sudo" or rank is "sudos" or rank is "asudo") and group is True:
 			t = threading.Thread(target=sudo,args=(client, message,redis))
 			t.daemon = True
