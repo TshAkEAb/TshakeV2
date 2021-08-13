@@ -18,6 +18,20 @@ def ranks(client, message,redis):
 	r = importlib.import_module("lang.arreply")
 
 	if (rank is "sudo"  or rank is "asudo" or rank is "sudos" or rank is "malk"):
+		if re.search("^ترتيب الاوامر$", text):
+			ar = {
+				"ا":"ايدي",
+			}
+			i = 1
+			orders = ""
+			for tx, text in ar.items():
+				ad = f"{tx}={text}"
+				if not redis.sismember("{}Nbot:{}:TXoeders".format(BOT_ID,chatID),ad):
+					redis.sadd("{}Nbot:{}:TXoeders".format(BOT_ID,chatID),ad)
+				orders += f"{i} - {text} > {tx}\n"
+				i+=1
+			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الاوامر الاتيه \n⎯ ⎯ ⎯ ⎯\n{orders}\n⎯ ⎯ ⎯ ⎯","reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+
 		if re.search(c.del_ac, text) and Ckuser(message):
 			H = "acreator"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
