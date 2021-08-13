@@ -34,7 +34,17 @@ def sudo(client, message,redis):
 	type = message.chat.type
 	c = importlib.import_module("lang.arcmd")
 	r = importlib.import_module("lang.arreply")
+	if redis.hexists("{}Nbot:stepSUDO:or".format(BOT_ID),userID):
+		tx = redis.hget("{}Nbot:stepSUDO:or".format(BOT_ID),userID)
+		if text :
+			redis.sadd("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID),f"{tx}={text}")
+			redis.hdel("{}Nbot:stepSUDO:or".format(BOT_ID),userID)
+			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الامر {tx} الى {text}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+
+
 	if redis.hexists("{}Nbot:stepSUDO".format(BOT_ID),userID):
+
+		
 		tx = redis.hget("{}Nbot:stepSUDO".format(BOT_ID),userID)
 		if text :
 			redis.hset("{}Nbot:TXreplys".format(BOT_ID),tx,text)
@@ -77,7 +87,34 @@ def sudo(client, message,redis):
 			if text == "وضع مجموعه المطور":
 				redis.set("{}Nbot:sudogp".format(BOT_ID),chatID)
 				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحديد المجموعه لاستلام الاشعارات \n{title} {chatID}","reply_to_message_id":message.message_id,"parse_mode":"html"})
-
+		if re.search("^اضف امر عام (.*)$",text):
+			cc = re.findall("^اضف امر عام (.*)$",text)
+			redis.hset("{}Nbot:stepSUDO:or".format(BOT_ID),userID,cc[0])
+			message.reply_text(f"⏺꒐ الان ارسل الامر ليتم تغيره الى {cc[0]}")
+		if re.search("^الاوامر العامه$",text):
+			tx = "الاوامر العامه ℹ️:\n"
+			x = redis.smembers("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID))
+			if not x :
+				message.reply_text(r.listempty2)
+				return 0
+			i = 1
+			for x in x:
+				x = x.split("=")
+				tx = tx+f"{i} - {x[0]} > {x[1]}\n"
+				i +=1
+			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","TXPoeders",userID]))]])
+			message.reply_text(tx,reply_markup=kb)
+			
+		if re.search("^مسح الامر العام (.*)$",text):
+			cc = re.findall("^مسح الامر العام (.*)$",text)[0]
+			x = redis.smembers("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID))
+			for x1 in x:
+				x = x1.split("=")
+				if x[0] == cc:
+					redis.srem("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID),x1)
+					message.reply_text(f"✅꒐ تم حذف الامر {cc} من الاوامر العامه")
+					return 0
+			message.reply_text(f"⚠️꒐ لا يوجد {cc} امر")
 		if re.search(c.leaveChatS, text) and redis.get("{}Nbot:leaveaddbot".format(BOT_ID)) :
 			Bot("leaveChat",{"chat_id":chatID})
 			redis.srem("{}Nbot:groups".format(BOT_ID),chatID)
@@ -139,6 +176,30 @@ def sudo(client, message,redis):
 
 	if text and (type is "private" or (type is "supergroup" or type is "group")) :
 		if rank == "sudo":
+
+			if text == "تفعيل الاذاعه" :
+				R = text.split(" ")[1]
+				get = redis.get("{}Nbot:bodas".format(BOT_ID))
+				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
+				if get :
+					save = redis.delete("{}Nbot:bodas".format(BOT_ID))
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+
+				else:
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+
+			if text == "تعطيل الاذاعه" :
+				R = text.split(" ")[1]
+				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
+				get = redis.get("{}Nbot:bodas".format(BOT_ID))
+				if get :
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+				else:
+					save = redis.set("{}Nbot:bodas".format(BOT_ID),1)
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+				
+
+
 			if re.search("^رفع نسخه احتياطيه$|^رفع نسخة احتياطية$", text):
 				msgID = Bot("sendMessage",{"chat_id":chatID,"text":"انتظر قليلاً يتم تحميل الملف ℹ️","reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})["result"]["message_id"]
 				fileName = message.reply_to_message.download()
@@ -393,7 +454,7 @@ def sudo(client, message,redis):
 				text = text.replace("مسح ","")
 				arrays = redis.smembers("{}Nbot:asudo".format(BOT_ID,chatID))
 				b = BYusers(arrays,chatID,redis,client)
-				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","sudos",userID]))]])
+				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","asudo",userID]))]])
 				if	b is not "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
 				else:
@@ -636,6 +697,8 @@ def sudo(client, message,redis):
 
 
 			if re.search(c.sendall, text) and message.reply_to_message and Ckuser(message):
+				if rank == "asudo" and redis.get("{}Nbot:bodas".format(BOT_ID)):
+					return 0
 				if message.reply_to_message.text:
 					v = Bot("sendMessage",{"chat_id":chatID,"text":message.reply_to_message.text,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 					if v["ok"]:
