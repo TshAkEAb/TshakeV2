@@ -696,11 +696,11 @@ def updateCallback(client, callback_query,redis):
       H = date[1]
 
 
-      if H != "sudos" and H != "creator":
+      if H != "sudos" and H != "creator" and H != "asudos":
         redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
         Bot("editMessageText",{"chat_id":chatID,"text":r.DoneDelList,"message_id":message_id,"disable_web_page_preview":True})
-      if H == "sudos":
-        redis.delete("{}Nbot:sudos".format(BOT_ID))
+      if H == "sudos" or H == "asudo":
+        redis.delete("{}Nbot:{}".format(BOT_ID,H))
         Bot("editMessageText",{"chat_id":chatID,"text":r.DoneDelList,"message_id":message_id,"disable_web_page_preview":True})
       if H == "creator":
         redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
