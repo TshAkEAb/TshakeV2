@@ -442,7 +442,7 @@ def gpcmd(client, message,redis):
             message.reply_text(f"✅꒐ تم حذف الامر {cc}")
             return 0
         message.reply_text(f"⚠️꒐ لا يوجد {cc} امر")
-      if re.search(c.addor,text):
+      if re.search("^اضف امر (?!عام) (.*)$",text):
         cc = re.findall(c.addor,text)
         redis.hset("{}Nbot:step:or".format(BOT_ID),userID,cc[0])
         message.reply_text(f"⏺꒐ الان ارسل الامر ليتم تغيره الى {cc[0]}")
