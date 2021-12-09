@@ -3,7 +3,7 @@ from utlis.send import send_msg, BYusers,Glang
 from utlis.tg import Bot,Ckuser
 from config import *
 
-from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re, json
 import importlib
 

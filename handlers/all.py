@@ -4,14 +4,13 @@ from utlis.locks import st,getOR
 from utlis.tg import Bot
 from config import *
 
-from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re, json, datetime
 import importlib
 from os import listdir
 from os.path import isfile, join
 
 
-from pyrogram.api.types import InputPeerChat
 def allGP(client, message,redis):
   type = message.chat.type
   userID = message.from_user.id

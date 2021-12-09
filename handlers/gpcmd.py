@@ -4,7 +4,7 @@ from utlis.send import send_msg, BYusers, Name,Glang,sendM,getAge
 from utlis.locks import st,Clang,st_res
 from config import *
 
-from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re, json
 import importlib
 

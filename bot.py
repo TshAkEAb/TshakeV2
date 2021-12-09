@@ -1,4 +1,4 @@
-from pyrogram import Client, MessageHandler, Filters
+from pyrogram import Client, filters
 
 from utlis.rank import setrank ,isrank ,remrank ,setsudos ,remsudos ,setsudo
 from handlers.callback import updateCallback
@@ -41,7 +41,7 @@ def answer(client, inline_query):
     t.daemon = True
     t.start()
 
-@app.on_message(~Filters.edited & ~Filters.new_chat_title & ~Filters.pinned_message & ~Filters.left_chat_member & ~Filters.new_chat_photo & ~Filters.new_chat_members & ~Filters.delete_chat_photo & ~Filters.channel)
+@app.on_message(~filters.edited & ~filters.new_chat_title & ~filters.pinned_message & ~filters.left_chat_member & ~filters.new_chat_photo & ~filters.new_chat_members & ~filters.delete_chat_photo & ~filters.channel)
 def update(client, message):
     t = threading.Thread(target=updateHandlers,args=(client, message,R))
     t.daemon = True
@@ -51,12 +51,12 @@ def callback(client, callback_query ):
     t = threading.Thread(target=updateCallback,args=(client, callback_query,R))
     t.daemon = True
     t.start()
-@app.on_message(Filters.edited & ~Filters.channel)
+@app.on_message(filters.edited & ~filters.channel)
 def updateEdit(client, message):
     t = threading.Thread(target=edit,args=(client, message,R))
     t.daemon = True
     t.start()
-@app.on_message(Filters.new_chat_title | Filters.pinned_message | Filters.left_chat_member | Filters.new_chat_photo | Filters.new_chat_members | Filters.delete_chat_photo & ~Filters.channel)
+@app.on_message(filters.new_chat_title | filters.pinned_message | filters.left_chat_member | filters.new_chat_photo | filters.new_chat_members | filters.delete_chat_photo & ~filters.channel)
 def updateEdit(client, message):
     t = threading.Thread(target=nf,args=(client, message,R))
     t.daemon = True

@@ -1,7 +1,7 @@
 import requests
 from config import *
 import sched, time,datetime,requests
-from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 

@@ -10,7 +10,7 @@ from handlers.all import allGP
 from utlis.tg import Bot,Del24
 from config import *
 
-from pyrogram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re , json,datetime,importlib
 
 def updateHandlers(client, message,redis):
