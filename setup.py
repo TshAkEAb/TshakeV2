@@ -35,4 +35,4 @@ API_HASH = '9f4461079f30757ca0a4c23e14bd523f'
   f.write(out)
   f.close()
 
-  os.system('pm2 start bot.py --name {} --interpreter python3.7 --interpreter-args -u'.format(ID))
+  os.system('pm2 start bot.py -f --name {} --interpreter python3.7 --interpreter-args -u'.format(ID))
