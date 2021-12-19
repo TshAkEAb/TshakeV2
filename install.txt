@@ -16,7 +16,7 @@ sudo apt-get install redis-server -y &>/dev/null
 sudo systemctl enable redis-server.service -y &>/dev/null
 echo -e "\rDone download libraries"
 echo -n "Downloading pm2.." 
-curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - &>/dev/null; sudo apt-get update &>/dev/null; sudo apt install nodejs -y &>/dev/null; npm install -g pm2 &>/dev/null
+curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - &>/dev/null; sudo apt-get update &>/dev/null; sudo apt install nodejs -y &>/dev/null; sudo npm install -g pm2 &>/dev/null
 echo -e "\rDone download pm2"
 echo -n "Downloading Tshake Source.." 
 git clone https://github.com/TshAkEAb/TshakeV2.git &>/dev/null
