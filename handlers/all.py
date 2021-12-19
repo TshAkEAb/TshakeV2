@@ -64,7 +64,7 @@ def allGP(client, message,redis):
       Bot("sendMessage",{"chat_id":chatID,"text":r.Showall,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":reply_markup})
 
     if text == "عدد الكروب" and (rank is not False or rank is not  0 ):
-      from pyrogram.api.functions.channels import GetFullChannel
+      from pyrogram.raw.functions.channels import GetFullChannel
       chat = client.resolve_peer(chatID)
       full_chat = client.send(GetFullChannel(channel=chat)).full_chat
       Bot("sendMessage",{"chat_id":chatID,"text":r.gpinfo.format(message.chat.title,full_chat.participants_count,full_chat.admins_count,full_chat.kicked_count,full_chat.banned_count,message.message_id),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
