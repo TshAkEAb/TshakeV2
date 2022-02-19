@@ -7,7 +7,7 @@ from config import *
 import threading, requests, time, random
 
 def edit(client, message,redis):
-    userID = message.from_user.id
+    userID = message.from_user.id if message.from_user.id else None
     chatID = message.chat.id
     rank = isrank(redis,userID,chatID)
     group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
