@@ -25,7 +25,7 @@ def eq():
 
 def nf(client, message,redis):
   type = message.chat.type
-  userID = message.from_user.id
+  userID = message.from_user.id if message.from_user.id else None
   chatID = message.chat.id
   title = message.chat.title
   rank = isrank(redis,userID,chatID)
@@ -35,7 +35,6 @@ def nf(client, message,redis):
   group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
   rank = isrank(redis,userID,chatID)
   if group is True and message.outgoing != True:
-
     if message.left_chat_member:
       if message.left_chat_member.id == int(BOT_ID):
         redis.srem("{}Nbot:groups".format(BOT_ID),chatID)
@@ -49,7 +48,6 @@ def nf(client, message,redis):
 
     
     if message.new_chat_members:
-
       if (rank is False or rank is 0) and GPranks(userID,chatID) == "member" and re.search("is_bot=True",str(message.new_chat_members)):
         if redis.sismember("{}Nbot:Lbots".format(BOT_ID),chatID):
           for mb in message.new_chat_members:
@@ -113,3 +111,5 @@ def nf(client, message,redis):
             "can_send_polls": 0,"can_change_info": 0,"can_add_web_page_previews": 0,"can_pin_messages": 0,"can_invite_users": 0,})
         if redis.sismember("{}Nbot:bans".format(BOT_ID),userId):
           Bot("kickChatMember",{"chat_id":chatID,"user_id":userId})
+      user_name = "@"+message.from_user.username if message.from_user.username  else message.from_user.first_name
+      redis.hset("{}Nbot:MowAddMe:{}".format(BOT_ID,chatID),message.new_chat_members[0].id,user_name)

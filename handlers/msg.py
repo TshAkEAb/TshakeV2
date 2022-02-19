@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from utlis.rank import setrank ,isrank ,remrank ,setsudos ,remsudos ,setsudo,IDrank,GPranks
 from utlis.send import send_msg, BYusers, sendM,Glang,GetLink
 from handlers.delete import delete
@@ -17,6 +18,9 @@ def updateHandlers(client, message,redis):
 	if redis.get("{}Nbot:bigM".format(BOT_ID)):
 		return False
 	type = message.chat.type
+	if message.sender_chat and redis.sismember("{}Nbot:Lchannels".format(BOT_ID),message.chat.id):
+		if not message.views:
+			Bot("deleteMessage",{"chat_id":message.chat.id,"message_id":message.message_id})
 	try:
 		userID = message.from_user.id
 		chatID = message.chat.id
@@ -26,8 +30,8 @@ def updateHandlers(client, message,redis):
 	r = importlib.import_module("lang.arreply")
 
 	if (type is "supergroup" or type is "group") and message.outgoing != True:
-		userID = message.from_user.id
 		chatID = message.chat.id
+		userID = message.from_user.id
 		rank = isrank(redis,userID,chatID)
 		group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
 		text = message.text
@@ -43,7 +47,7 @@ def updateHandlers(client, message,redis):
 						Bot("sendMessage",{"chat_id":chatID,"text":r.Toolow.format((int(redis.get("{}Nbot:autoaddbotN".format(BOT_ID))) or 0)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
 						return False
 					GetME = Bot("getChatMember",{"chat_id":chatID,"user_id":BOT_ID})["result"]
-					if (not GetME["can_change_info"] or not GetME["can_delete_messages"] or not GetME["can_invite_users"] or not GetME["can_restrict_members"] or not GetME["can_pin_messages"] or not GetME["can_promote_members"]):
+					if (not GetME["can_change_info"] or not GetME["can_delete_messages"] or not GetME["can_invite_users"] or not GetME["can_restrict_members"] or not GetME["can_pin_messages"]):
 						Bot("sendMessage",{"chat_id":chatID,"text":r.GiveMEall,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 						return False
 
@@ -137,6 +141,8 @@ def updateHandlers(client, message,redis):
 			t = threading.Thread(target=gpcmd,args=(client, message,redis))
 			t.daemon = True
 			t.start()
+		if rank is "vip" and message.forward_date and redis.sismember("{}Nbot:Lfwd".format(BOT_ID),chatID):
+			Bot("deleteMessage",{"chat_id":chatID,"message_id":message.message_id})
 
 
 	if type is "private" and message.outgoing != True:
@@ -226,7 +232,6 @@ def updateHandlers(client, message,redis):
 							if TY == "blockTEXTs":
 								words = words+"\n"+str(i)+" - {"+ID+"}"
 								i += 1
-								print(len(words))
 								if len(words) > 3000:
 									Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
 									words = ''

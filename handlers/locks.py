@@ -194,6 +194,26 @@ def locks(client, message,redis):
     else:
       send_msg("LUN",client, message,r.unlocked,"Lvoice",T,redis)
 
+
+
+  if text == "قفل القنوات" :
+    get = redis.sismember("{}Nbot:Lchannels".format(BOT_ID),chatID)
+    if get :
+      send_msg("LUN",client, message,r.locked,"Lchannels",T,redis)
+    else:
+      save = redis.sadd("{}Nbot:Lchannels".format(BOT_ID),chatID)
+      send_msg("LU",client, message,r.lock,"Lchannels",T,redis)
+
+  if text == "فتح القنوات" :
+    get = redis.sismember("{}Nbot:Lchannels".format(BOT_ID),chatID)
+    if get :
+      save = redis.srem("{}Nbot:Lchannels".format(BOT_ID),chatID)
+      send_msg("LU",client, message,r.unlock,"Lchannels",T,redis)
+    else:
+      send_msg("LUN",client, message,r.unlocked,"Lchannels",T,redis)
+
+
+
   if text == c.Lcontact :
     get = redis.sismember("{}Nbot:Lcontact".format(BOT_ID),chatID)
     if get :
@@ -483,6 +503,29 @@ def locks(client, message,redis):
       else:
         save = redis.sadd("{}Nbot:ReplySend".format(BOT_ID),chatID)
         Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+
+
+    if text == "تفعيل ردود الميديا" :
+      R = text.split(" ")[1]
+      get = redis.sismember("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
+      BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
+      if get :
+        save = redis.srem("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+      else:
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+
+    if text == "تعطيل ردود الميديا" :
+      R = text.split(" ")[1]
+      BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
+      get = redis.sismember("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
+      if get :
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+      else:
+        save = redis.sadd("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+
+
 
     if text == c.LreplyBOT :
       R = text.split(" ")[1]

@@ -8,7 +8,6 @@ from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyb
 def Bot(method,data):
   url = "https://api.telegram.org/bot{}/{}".format(TOKEN,method)
   post = requests.post(url,data=data)
-  #print(post.json())
   return post.json()
 
 

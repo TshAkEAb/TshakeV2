@@ -262,7 +262,6 @@ def sudo(client, message,redis):
 					userFn = getUser.first_name
 					setsudo(redis,userId)
 					date = open("./config.py").read().replace(f"SUDO = {userID}", f"SUDO = {userId}")
-					print(date)
 					open("./config.py","w+").write(date)
 					Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل المطور الاساسي الى {userFn} {userId}","reply_to_message_id":message.message_id,"parse_mode":"html"})
 				except Exception as e:
@@ -569,7 +568,6 @@ def sudo(client, message,redis):
 					userId = getUser.id
 					userFn = getUser.first_name
 					Getrank = isrank(redis,userId,chatID)
-					GetGprank = GPranks(userId,chatID)
 					if Getrank == "bot":return False
 					if Getrank == "sudos" or Getrank == "sudo":
 						Bot("sendMessage",{"chat_id":chatID,"text":r.cTsudo,"reply_to_message_id":message.message_id,"parse_mode":"html"})
@@ -579,9 +577,6 @@ def sudo(client, message,redis):
 					else:
 						send_msg("BNN",client, message,r.restrictedall,"restricteds",getUser,redis)
 						redis.sadd("{}Nbot:restricteds".format(BOT_ID),userId)
-						if (GetGprank == "member"):
-							Bot("restrictChatMember",{"chat_id": chatID,"user_id": userId,"can_send_messages": 0,"can_send_media_messages": 0,"can_send_other_messages": 0,
-						    "can_send_polls": 0,"can_change_info": 0,"can_add_web_page_previews": 0,"can_pin_messages": 0,"can_invite_users": 0,})
 				except Exception as e:
 					print(e)
 					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
@@ -599,7 +594,6 @@ def sudo(client, message,redis):
 					userId = getUser.id
 					userFn = getUser.first_name
 					Getrank = isrank(redis,userId,chatID)
-					GetGprank = GPranks(userId,chatID)
 					if Getrank == "bot":return False
 					if redis.sismember("{}Nbot:restricteds".format(BOT_ID),userId):
 						send_msg("BNN",client, message,r.unrestrictedall,"restricteds",getUser,redis)

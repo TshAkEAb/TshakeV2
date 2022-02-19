@@ -289,7 +289,6 @@ def gpcmd(client, message,redis):
         GetGprank = GPranks(userId,chatID)
         BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
         if Getrank == "bot":return False
-        print(GetGprank)
         if GetGprank == "member" and not redis.sismember("{}Nbot:{}:bans".format(BOT_ID,chatID),userId) and not redis.sismember("{}Nbot:{}:restricteds".format(BOT_ID,chatID),userId):
           Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n⚪️꒐ لا توجد عليه قيود","reply_to_message_id":message.message_id,"parse_mode":"html"})
         
@@ -442,7 +441,7 @@ def gpcmd(client, message,redis):
             message.reply_text(f"✅꒐ تم حذف الامر {cc}")
             return 0
         message.reply_text(f"⚠️꒐ لا يوجد {cc} امر")
-      if re.search("^اضف امر (?!عام)\w*$",text):
+      if re.search("^اضف امر (?!عام)(.*)$",text):
         cc = re.findall(c.addor,text)
         redis.hset("{}Nbot:step:or".format(BOT_ID),userID,cc[0])
         message.reply_text(f"⏺꒐ الان ارسل الامر ليتم تغيره الى {cc[0]}")
@@ -551,8 +550,6 @@ __italic__
 `inline fixed-width code`
 ⎯ ⎯ ⎯ ⎯""",parse_mode="markdown",disable_web_page_preview=True)
       if re.search(c.setIDC, text):
-          # print("ssssssssss")
-          # tx = text.replace(c.RsetIDC,"")
           tx = re.findall(c.setIDC,text)[0][1]
           rep = {"#age":"{age}","#name":"{name}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
           for v in rep.keys():
