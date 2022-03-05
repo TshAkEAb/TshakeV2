@@ -9,6 +9,7 @@ sudo python3.7 -m pip install --upgrade pip &>/dev/null
 echo -e "\rDone download python3.7"
 echo -n "Downloading libraries.." 
 sudo apt-get update -y &>/dev/null
+sudo python3.7 -m pip install -U setuptools &>/dev/null
 sudo python3.7 -m pip install -U Pyrogram &>/dev/null
 sudo python3.7 -m pip install -U tgcrypto &>/dev/null
 sudo python3.7 -m pip install redis &>/dev/null
