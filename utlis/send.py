@@ -23,11 +23,11 @@ def send_msg(type,client, message,textM,Lhash,T,redis):
     tx = textM.format(BY,T)
     b = json.dumps(["LandU",Lhash,userID,Tp])
     v = InlineKeyboardMarkup([[InlineKeyboardButton(r.Corder, callback_data=b)]])
-    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":v})
+    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":v})
   if type == "LUN":
     BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
     tx = textM.format(BY,T)
-    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
   if type == "UD":
     R = text.split(" ")[1]
@@ -35,7 +35,7 @@ def send_msg(type,client, message,textM,Lhash,T,redis):
     userFn = Name(T.first_name)
     BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
     tx = textM.format(BY,R)
-    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
   if type == "BN":
     userId = T.id
@@ -48,14 +48,14 @@ def send_msg(type,client, message,textM,Lhash,T,redis):
       Tp = "BtoU"
     b = json.dumps(["Corder",Lhash,userID,userId,Tp])
     v = InlineKeyboardMarkup([[InlineKeyboardButton(r.Corder, callback_data=b)]])
-    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"markdown","disable_web_page_preview":True,"reply_markup":v})
+    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"markdown","disable_web_page_preview":True,"reply_markup":v})
   
   if type == "BNN":
     userId = T.id
     userFn = Name(T.first_name)
     BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
     tx = textM.format(BY)
-    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+    Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
   
 
 
@@ -165,9 +165,9 @@ def Sendto(redis,callback_query,type):
 
 def fwdto(redis,callback_query,type):
   IDS = redis.smembers("{}Nbot:{}".format(BOT_ID,type))
-  if callback_query.message.reply_to_message.message_id:
+  if callback_query.message.reply_to_message.id:
     for sID in IDS:
-      ck = Bot("forwardMessage",{"chat_id":sID,"from_chat_id":callback_query.message.chat.id,"message_id":callback_query.message.reply_to_message.message_id})
+      ck = Bot("forwardMessage",{"chat_id":sID,"from_chat_id":callback_query.message.chat.id,"message_id":callback_query.message.reply_to_message.id})
       CKsend(redis,callback_query,type,ck,sID)
       time.sleep(0.3)
   return redis.scard("{}Nbot:donesend".format(BOT_ID)),redis.scard("{}Nbot:dontsend".format(BOT_ID))
@@ -178,7 +178,7 @@ def sendM(T,msg,message):
     Len = 3000
     msgs = [msg[y-Len:y] for y in range(Len, len(msg)+Len,Len)]
     for tx in msgs:
-      Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"markdown","disable_web_page_preview":True})
+      Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"markdown","disable_web_page_preview":True})
       time.sleep(0.3)
 
 def GetLink(chatID):

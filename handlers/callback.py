@@ -57,7 +57,7 @@ def updateCallback(client, callback_query,redis):
   chatID = callback_query.message.chat.id
   userFN = callback_query.from_user.first_name
   title = callback_query.message.chat.title
-  message_id = callback_query.message.message_id
+  message_id = callback_query.message.id
   date = json.loads(callback_query.data)
   
   group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
@@ -240,7 +240,7 @@ def updateCallback(client, callback_query,redis):
       
     if date[0] == "delmsgclick":
       Bot("deleteMessage",{"chat_id":chatID,"message_id":message_id})
-      Bot("deleteMessage",{"chat_id":chatID,"message_id":callback_query.message.reply_to_message.message_id})
+      Bot("deleteMessage",{"chat_id":chatID,"message_id":callback_query.message.reply_to_message.id})
 
     if date[0] == "ckGPs":
       rank = isrank(redis,userID,chatID)

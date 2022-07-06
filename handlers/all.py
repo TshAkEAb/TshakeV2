@@ -29,7 +29,7 @@ def allGP(client, message,redis):
     if text == "منو ضافني":
       get = redis.hget("{}Nbot:MowAddMe:{}".format(BOT_ID,chatID),userID)
       if get:
-        Bot("sendMessage",{"chat_id":chatID,"text":f"تم اضافتك بواسطة ⏺: {get}","reply_to_message_id":message.message_id})
+        Bot("sendMessage",{"chat_id":chatID,"text":f"تم اضافتك بواسطة ⏺: {get}","reply_to_message_id":message.id})
     if re.search(c.setGPadmin,text):
       if re.search("@",text):
         user = text.split("@")[1]
@@ -49,29 +49,29 @@ def allGP(client, message,redis):
         pr = Bot("promoteChatMember",{"chat_id":chatID,"user_id":userId,"can_change_info":1,"can_delete_messages":1,"can_invite_users":1,"can_restrict_members":1,"can_pin_messages":1})
         if pr["ok"]:
           T ="<a href=\"tg://user?id={}\">{}</a>".format(userId,Name(userFn))
-          Bot("sendMessage",{"chat_id":chatID,"text":r.prGPadmin.format(T),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":r.prGPadmin.format(T),"reply_to_message_id":message.id,"parse_mode":"html"})
       except Exception as e:
-        Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
     if re.search(c.sors,text):
       kb = InlineKeyboardMarkup([[InlineKeyboardButton("قناه السورس 📢", url="t.me/zx_xx")],[InlineKeyboardButton("تواصل السورس 💬", url="t.me/A_5bot")],[InlineKeyboardButton("شروحات السورس 📑", url="t.me/tshaketeam")]])
       Botuser = client.get_me().username
-      Bot("sendMessage",{"chat_id":chatID,"text":r.sors.format("@"+Botuser),"disable_web_page_preview":True,"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.sors.format("@"+Botuser),"disable_web_page_preview":True,"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
     
     if re.search(c.dellink,text):
       kb = InlineKeyboardMarkup([[InlineKeyboardButton(c.dellink2, url="https://telegram.org/deactivate")]])
       Botuser = client.get_me().username
-      Bot("sendMessage",{"chat_id":chatID,"text":r.dellink,"disable_web_page_preview":True,"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.dellink,"disable_web_page_preview":True,"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 
     if re.search(c.ShowO,text) and (rank is not False or rank is not  0 or rank != "vip"):
       reply_markup = getOR(rank,r,userID)
-      Bot("sendMessage",{"chat_id":chatID,"text":r.Showall,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":reply_markup})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.Showall,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":reply_markup})
 
     if text == "عدد الكروب" and (rank is not False or rank is not  0 ):
       from pyrogram.raw.functions.channels import GetFullChannel
       chat = client.resolve_peer(chatID)
       full_chat = client.send(GetFullChannel(channel=chat)).full_chat
-      Bot("sendMessage",{"chat_id":chatID,"text":r.gpinfo.format(message.chat.title,full_chat.participants_count,full_chat.admins_count,full_chat.kicked_count,full_chat.banned_count,message.message_id),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.gpinfo.format(message.chat.title,full_chat.participants_count,full_chat.admins_count,full_chat.kicked_count,full_chat.banned_count,message.id),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
     if text == c.ID and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID) and not message.reply_to_message:
       Ch = True
       t = IDrank(redis,userID,chatID,r)
@@ -95,13 +95,13 @@ def allGP(client, message,redis):
         else:
           Ch = False
           file_id = get["result"]["photos"][0][0]["file_id"]
-          Bot("sendPhoto",{"chat_id":chatID,"photo":file_id,"caption":tx.format(username=("@"+username or "None"),id=userID,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendPhoto",{"chat_id":chatID,"photo":file_id,"caption":tx.format(username=("@"+username or "None"),id=userID,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.id,"parse_mode":"html"})
       if Ch == True:
-        Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+username or "None"),id=userID,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+username or "None"),id=userID,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.id,"parse_mode":"html"})
 
     if text == "رتبتي":
       t = IDrank(redis,userID,chatID,r)
-      Bot("sendMessage",{"chat_id":chatID,"text":f"⏏️꒐ موقعك : {t}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":f"⏏️꒐ موقعك : {t}","reply_to_message_id":message.id,"parse_mode":"html"})
     if text == c.ID and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID) and message.reply_to_message:
       us = message.reply_to_message.from_user.id
       rusername = message.reply_to_message.from_user.username
@@ -120,7 +120,7 @@ def allGP(client, message,redis):
           tx = tx.replace(v,rep[v])
       else:
         tx = r.ReIDnPT
-      Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+rusername or "None"),id=us,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+rusername or "None"),id=us,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.id,"parse_mode":"html"})
     if re.search(c.idus,text) and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID):
       user = text.split("@")[1]
       try:
@@ -135,27 +135,27 @@ def allGP(client, message,redis):
         edits = (redis.hget("{}Nbot:{}:edits".format(BOT_ID,chatID),us) or 0)
         rate = int(msgs)*100/20000
         tx = r.ReIDnPT
-        Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+rusername or "None"),id=us,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        Bot("sendMessage",{"chat_id":chatID,"text":tx.format(username=("@"+rusername or "None"),id=us,stast=t,msgs=msgs,edits=edits,age=age,rate=str(rate)+"%"),"reply_to_message_id":message.id,"parse_mode":"html"})
       except Exception as e:
         print(e)
 
     if re.search(c.ShowSudos, text):
       tx = (redis.get("{}Nbot:SHOWsudos".format(BOT_ID)) or "")
-      Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html"})
     if text == c.mymsgs:
       get = redis.hget("{}Nbot:{}:msgs".format(BOT_ID,chatID),userID)
-      Bot("sendMessage",{"chat_id":chatID,"text":r.yourmsgs.format((get or 0)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.yourmsgs.format((get or 0)),"reply_to_message_id":message.id,"parse_mode":"html"})
     if text == c.link and not redis.sismember("{}Nbot:showlink".format(BOT_ID),chatID):
       get = (redis.hget("{}Nbot:links".format(BOT_ID),chatID) or GetLink(chatID) or "none")
-      Bot("sendMessage",{"chat_id":chatID,"text":r.showGPlk.format(get),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.showGPlk.format(get),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.myedits:
       get = redis.hget("{}Nbot:{}:edits".format(BOT_ID,chatID),userID)
-      Bot("sendMessage",{"chat_id":chatID,"text":r.youredits.format((get or 0)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.youredits.format((get or 0)),"reply_to_message_id":message.id,"parse_mode":"html"})
 
     if text == c.myaddcontact:
       get = redis.hget("{}Nbot:{}:addcontact".format(BOT_ID,chatID),userID)
-      Bot("sendMessage",{"chat_id":chatID,"text":r.youraddcontact.format((get or 0)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+      Bot("sendMessage",{"chat_id":chatID,"text":r.youraddcontact.format((get or 0)),"reply_to_message_id":message.id,"parse_mode":"html"})
     
     
     if not redis.sismember("{}Nbot:ReplySendBOT".format(BOT_ID),chatID):
@@ -165,25 +165,25 @@ def allGP(client, message,redis):
           rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
-          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.id,"parse_mode":"html"})
         except Exception as e:
-          Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html"})
       if not redis.sismember("{}Nbot:ReplyMedia".format(BOT_ID),chatID):
         if redis.hexists("{}Nbot:STreplys".format(BOT_ID),text):
           ID = redis.hget("{}Nbot:STreplys".format(BOT_ID),text)
-          Bot("sendSticker",{"chat_id":chatID,"sticker":ID,"reply_to_message_id":message.message_id})
+          Bot("sendSticker",{"chat_id":chatID,"sticker":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:GFreplys".format(BOT_ID),text):
           ID = redis.hget("{}Nbot:GFreplys".format(BOT_ID),text)
-          Bot("sendanimation",{"chat_id":chatID,"animation":ID,"reply_to_message_id":message.message_id})
+          Bot("sendanimation",{"chat_id":chatID,"animation":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:VOreplys".format(BOT_ID),text)
-          Bot("sendvoice",{"chat_id":chatID,"voice":ID,"reply_to_message_id":message.message_id})
+          Bot("sendvoice",{"chat_id":chatID,"voice":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:PHreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:PHreplys".format(BOT_ID),text)
-          Bot("sendphoto",{"chat_id":chatID,"photo":ID,"reply_to_message_id":message.message_id})
+          Bot("sendphoto",{"chat_id":chatID,"photo":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:DOreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:DOreplys".format(BOT_ID),text)
-          Bot("sendDocument",{"chat_id":chatID,"document":ID,"reply_to_message_id":message.message_id})
+          Bot("sendDocument",{"chat_id":chatID,"document":ID,"reply_to_message_id":message.id})
 
 
 
@@ -194,29 +194,29 @@ def allGP(client, message,redis):
           rep = {"#cn":"{cn}","#age":"{age}","#fn":"{fn}","#id":"{id}","#username":"{username}","#msgs":"{msgs}","#stast":"{stast}","#edits":"{edits}","#rate":"{rate}","{us}":"{username}","#us":"{username}"}
           for v in rep.keys():
             tx = tx.replace(v,rep[v])
-          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx.format(fn=userFN,username=("@"+username or "n"),id=userID,stast=IDrank(redis,userID,chatID,r),cn=title),"reply_to_message_id":message.id,"parse_mode":"html"})
         except Exception as e:
-          Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+          Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html"})
       if not redis.sismember("{}Nbot:ReplyMedia".format(BOT_ID),chatID):
         if redis.hexists("{}Nbot:{}:STreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:STreplys".format(BOT_ID,chatID),text)
-          Bot("sendSticker",{"chat_id":chatID,"sticker":ID,"reply_to_message_id":message.message_id})
+          Bot("sendSticker",{"chat_id":chatID,"sticker":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:{}:GFreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:GFreplys".format(BOT_ID,chatID),text)
-          Bot("sendanimation",{"chat_id":chatID,"animation":ID,"reply_to_message_id":message.message_id})
+          Bot("sendanimation",{"chat_id":chatID,"animation":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:VOreplys".format(BOT_ID,chatID),text)
-          Bot("sendvoice",{"chat_id":chatID,"voice":ID,"reply_to_message_id":message.message_id})
+          Bot("sendvoice",{"chat_id":chatID,"voice":ID,"reply_to_message_id":message.id})
         
         if redis.hexists("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:AUreplys".format(BOT_ID,chatID),text)
-          Bot("sendaudio",{"chat_id":chatID,"audio":ID,"reply_to_message_id":message.message_id})
+          Bot("sendaudio",{"chat_id":chatID,"audio":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:{}:PHreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:PHreplys".format(BOT_ID,chatID),text)
-          Bot("sendphoto",{"chat_id":chatID,"photo":ID,"reply_to_message_id":message.message_id})
+          Bot("sendphoto",{"chat_id":chatID,"photo":ID,"reply_to_message_id":message.id})
         if redis.hexists("{}Nbot:{}:DOreplys".format(BOT_ID,chatID),text):
           ID = redis.hget("{}Nbot:{}:DOreplys".format(BOT_ID,chatID),text)
-          Bot("sendDocument",{"chat_id":chatID,"document":ID,"reply_to_message_id":message.message_id})
+          Bot("sendDocument",{"chat_id":chatID,"document":ID,"reply_to_message_id":message.id})
 
   if redis.smembers("{}Nbot:botfiles".format(BOT_ID)):
     onlyfiles = [f for f in listdir("files") if isfile(join("files", f))]

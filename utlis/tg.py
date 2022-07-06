@@ -76,7 +76,7 @@ def Ckuser(message):
       return True
     elif response["ok"] == False:
       kb = InlineKeyboardMarkup([[InlineKeyboardButton("اضغط للاشتراك ⏺", url="t.me/zx_xx")] ])
-      Bot("sendMessage",{"chat_id":chatID,"text":response["result"],"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
+      Bot("sendMessage",{"chat_id":chatID,"text":response["result"],"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
       return False
   except Exception as e:
     return True

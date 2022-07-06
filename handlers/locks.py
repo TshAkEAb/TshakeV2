@@ -410,19 +410,19 @@ def locks(client, message,redis):
         get = redis.sismember("{}Nbot:Lpin".format(BOT_ID),chatID)
         if get :
           save = redis.srem("{}Nbot:Lpin".format(BOT_ID),chatID)
-          Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+          Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
         else:
-          Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+          Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
       if text == c.Upin :
         R = text.split(" ")[1]
         BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
         get = redis.sismember("{}Nbot:Lpin".format(BOT_ID),chatID)
         if get :
-          Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+          Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
         else:
           save = redis.sadd("{}Nbot:Lpin".format(BOT_ID),chatID)
-          Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+          Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
         
   if rank != "admin":
     if text == c.LwelcomeSend :
@@ -431,19 +431,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:welcomeSend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.UwelcomeSend :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:welcomeSend".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:welcomeSend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
   if rank != "admin":
 
@@ -469,10 +469,10 @@ def locks(client, message,redis):
       get = redis.sismember("{}Nbot:bancheck".format(BOT_ID),chatID)
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:bancheck".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Ubancheck :
       R = text.split(" ")[1]
@@ -480,9 +480,9 @@ def locks(client, message,redis):
       get = redis.sismember("{}Nbot:bancheck".format(BOT_ID),chatID)
       if get :
         save = redis.srem("{}Nbot:bancheck".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Lreply :
       R = text.split(" ")[1]
@@ -490,19 +490,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:ReplySend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Ureply :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:ReplySend".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:ReplySend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
     if text == "تفعيل ردود الميديا" :
@@ -511,19 +511,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == "تعطيل ردود الميديا" :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:ReplyMedia".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
 
@@ -533,19 +533,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:ReplySendBOT".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.UreplyBOT :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:ReplySendBOT".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:ReplySendBOT".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Lkickme :
       R = text.split(" ")[1]
@@ -553,19 +553,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:kickme".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Ukickme :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:kickme".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:kickme".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Lshowlink :
       R = text.split(" ")[1]
@@ -573,19 +573,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:showlink".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Ushowlink :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:showlink".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:showlink".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
     if re.search(c.Lkickban, text) and  (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator") :
@@ -594,19 +594,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:kickban".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search(c.Ukickban, text) and  (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator"):
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:kickban".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:kickban".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
 
@@ -617,19 +617,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:IDSend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.UID : 
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:IDSend".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search(c.LIDPH,text):
       R = text.replace(c.stAd,"")
@@ -637,29 +637,29 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:IDSendPH".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search(c.UIDPH,text): 
       R = text.replace(c.stUd,"")
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:IDSendPH".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:IDSendPH".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Lflood :
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:Lflood".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:Lflood".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if text == c.Uflood :
       R = text.split(" ")[1]
@@ -667,9 +667,9 @@ def locks(client, message,redis):
       get = redis.sismember("{}Nbot:Lflood".format(BOT_ID),chatID)
       if get :
         save = redis.srem("{}Nbot:Lflood".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
 
@@ -679,19 +679,19 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:IDpt".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search(c.UIDpt,text): 
       R = text.replace(c.stUd,"")
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:IDpt".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:IDpt".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search("^تعطيل الاوامر العامه$",text):
       R = text.replace(c.stUd,"")
@@ -699,17 +699,17 @@ def locks(client, message,redis):
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       if get :
         save = redis.srem("{}Nbot:publicOrders".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
-         Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+         Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
     if re.search("^تفعيل الاوامر العامه$",text):
       R = text.replace(c.stAd,"")
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:publicOrders".format(BOT_ID),chatID)
       if get :
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
       else:
         save = redis.sadd("{}Nbot:publicOrders".format(BOT_ID),chatID)
-        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+        Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 

@@ -10,26 +10,30 @@ from handlers.sudo import sudo
 from handlers.all import allGP
 from utlis.tg import Bot,Del24
 from config import *
-
+from pyrogram import enums
 from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 import threading, requests, time, random, re , json,datetime,importlib
 
 def updateHandlers(client, message,redis):
+	# print(message)
 	if redis.get("{}Nbot:bigM".format(BOT_ID)):
 		return False
 	type = message.chat.type
+	# Bot("sendMessage",{"chat_id":message.chat.id/,"text":"hhhhhhhhhh","reply_to_message_id":message.id,"parse_mode":"html"})
+
 	if message.sender_chat and redis.sismember("{}Nbot:Lchannels".format(BOT_ID),message.chat.id):
 		if not message.views:
-			Bot("deleteMessage",{"chat_id":message.chat.id,"message_id":message.message_id})
+			Bot("deleteMessage",{"chat_id":message.chat.id,"message_id":message.id})
 	try:
 		userID = message.from_user.id
 		chatID = message.chat.id
 	except Exception as e:
+		print(e)
 		return 0
 	c = importlib.import_module("lang.arcmd")
 	r = importlib.import_module("lang.arreply")
 
-	if (type is "supergroup" or type is "group") and message.outgoing != True:
+	if (type is enums.ChatType.SUPERGROUP or type is enums.ChatType.GROUP) and message.outgoing != True:
 		chatID = message.chat.id
 		userID = message.from_user.id
 		rank = isrank(redis,userID,chatID)
@@ -44,11 +48,11 @@ def updateHandlers(client, message,redis):
 					else:
 						auN = 1
 					if auN >= Bot("getChatMembersCount",{"chat_id":chatID})["result"] and not (rank is "sudo" or rank is "sudos"):
-						Bot("sendMessage",{"chat_id":chatID,"text":r.Toolow.format((int(redis.get("{}Nbot:autoaddbotN".format(BOT_ID))) or 0)),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.Toolow.format((int(redis.get("{}Nbot:autoaddbotN".format(BOT_ID))) or 0)),"reply_to_message_id":message.id,"parse_mode":"html"})
 						return False
 					GetME = Bot("getChatMember",{"chat_id":chatID,"user_id":BOT_ID})["result"]
 					if (not GetME["can_change_info"] or not GetME["can_delete_messages"] or not GetME["can_invite_users"] or not GetME["can_restrict_members"] or not GetME["can_pin_messages"]):
-						Bot("sendMessage",{"chat_id":chatID,"text":r.GiveMEall,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.GiveMEall,"reply_to_message_id":message.id,"parse_mode":"html"})
 						return False
 
 				if text == c.add and not redis.sismember("{}Nbot:disabledgroups".format(BOT_ID),chatID) and Ckuser(message):
@@ -66,7 +70,7 @@ def updateHandlers(client, message,redis):
 					add = redis.sadd("{}Nbot:groups".format(BOT_ID),chatID)
 					Bot("exportChatInviteLink",{"chat_id":chatID})
 					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
-					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd.format(title),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 					sendTO = (redis.get("{}Nbot:sudogp".format(BOT_ID)) or SUDO)
 					get = (redis.hget("{}Nbot:links".format(BOT_ID),chatID) or GetLink(chatID) or "https://t.me/zx_xx")
 					kb = InlineKeyboardMarkup([[InlineKeyboardButton("الرابط 🖇", url=get)]])
@@ -77,21 +81,21 @@ def updateHandlers(client, message,redis):
 					redis.srem("{}Nbot:disabledgroups".format(BOT_ID),chatID)
 					redis.hdel("{}Nbot:disabledgroupsTIME".format(BOT_ID),chatID)
 					
-					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd2.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd2.format(title),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 				if text == c.disabl  and Ckuser(message):
-					Bot("sendMessage",{"chat_id":chatID,"text":r.disabled.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.disabled.format(title),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		if text and group is True:
 			if (rank is "sudo" or rank is "sudos" or rank is "asudo") or (redis.get("{}Nbot:autoaddbot".format(BOT_ID)) and GPranks(userID,chatID) == "creator"):
 				if text == c.add  and Ckuser(message):
-					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadded.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadded.format(title),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 				if text == c.disabl  and Ckuser(message):
 					redis.srem("{}Nbot:groups".format(BOT_ID),chatID)
 					redis.sadd("{}Nbot:disabledgroups".format(BOT_ID),chatID)
 					NextDay_Date = datetime.datetime.today() + datetime.timedelta(days=1)
 					redis.hset("{}Nbot:disabledgroupsTIME".format(BOT_ID),chatID,str(NextDay_Date))
 					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
-					Bot("sendMessage",{"chat_id":chatID,"text":r.disabl.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.disabl.format(title),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 		if  group is True:
 			t = threading.Thread(target=allGP,args=(client, message,redis))
 			t.daemon = True
@@ -142,10 +146,10 @@ def updateHandlers(client, message,redis):
 			t.daemon = True
 			t.start()
 		if rank is "vip" and message.forward_date and redis.sismember("{}Nbot:Lfwd".format(BOT_ID),chatID):
-			Bot("deleteMessage",{"chat_id":chatID,"message_id":message.message_id})
+			Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
 
 
-	if type is "private" and message.outgoing != True:
+	if type is enums.ChatType.PRIVATE and message.outgoing != True:
 		text = message.text
 		rank = isrank(redis,userID,chatID)
 		if (rank is "sudo" or rank is "asudo" or rank is "sudos"):
@@ -158,11 +162,11 @@ def updateHandlers(client, message,redis):
 			redis.sadd("{}Nbot:privates".format(BOT_ID),userID)
 			if rank == "sudo":
 				kb = ReplyKeyboardMarkup([[r.RKgp, r.RKgpl],[r.RKaf, r.RKrf],[r.RKf],["جلب نسخه احتياطيه"],[r.RKub]],resize_keyboard=True)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.sudostart,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.sudostart,"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
 				return 0
 			getbot = client.get_me()
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton("TshakeTeam", url="t.me/zx_xx")]])
-			Bot("sendMessage",{"chat_id":chatID,"text":r.botstart.format(getbot.first_name,getbot.username),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.botstart.format(getbot.first_name,getbot.username),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
 			
 		if text and re.search("^/start (.*)$",text):
 			tx = text.replace("/start ","")
@@ -182,11 +186,11 @@ def updateHandlers(client, message,redis):
 							words = words+"\n"+str(i)+" - {"+word+"}"
 							i += 1
 							if len(words) > 3000:
-								Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+								Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 								words = ''
-						Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(r.Delall2R,callback_data=json.dumps(["del{}".format(TY+'BOT'),"",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DelallR,"reply_to_message_id":message.message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DelallR,"reply_to_message_id":message.id,"disable_web_page_preview":True,"reply_markup":reply_markup})
 					
 			if order == "showreplylist":
 				chatId = split[1]
@@ -203,11 +207,11 @@ def updateHandlers(client, message,redis):
 							words = words+"\n"+str(i)+" - {"+word+"}"
 							i += 1
 							if len(words) > 3000:
-								Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+								Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 								words = ''
-						Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(r.Delall2R,callback_data=json.dumps(["del{}".format(TY),chatId,userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DelallR,"reply_to_message_id":message.message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DelallR,"reply_to_message_id":message.id,"disable_web_page_preview":True,"reply_markup":reply_markup})
 
 			if order == "showBlocklist":
 				chatId = split[1]
@@ -233,13 +237,13 @@ def updateHandlers(client, message,redis):
 								words = words+"\n"+str(i)+" - {"+ID+"}"
 								i += 1
 								if len(words) > 3000:
-									Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+									Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 									words = ''
 						if TY == "blockTEXTs":
 
-							Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+							Bot("sendMessage",{"chat_id":userId,"text":words,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(r.Delall2,callback_data=json.dumps(["delBL",TY,userID,chatId])),]])
-						Bot("sendMessage",{"chat_id":userId,"text":r.Delall,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":userId,"text":r.Delall,"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":reply_markup})
 					else:
-						Bot("sendMessage",{"chat_id":userId,"text":r.listempty2,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":userId,"text":r.listempty2,"reply_to_message_id":message.id,"parse_mode":"html"})

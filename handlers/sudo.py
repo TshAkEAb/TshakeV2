@@ -39,7 +39,7 @@ def sudo(client, message,redis):
 		if text :
 			redis.sadd("{}Nbot:{}:TXPoeders".format(BOT_ID,chatID),f"{tx}={text}")
 			redis.hdel("{}Nbot:stepSUDO:or".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الامر {tx} الى {text}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الامر {tx} الى {text}","reply_to_message_id":message.id,"parse_mode":"html"})
 
 
 	if redis.hexists("{}Nbot:stepSUDO".format(BOT_ID),userID):
@@ -49,44 +49,44 @@ def sudo(client, message,redis):
 		if text :
 			redis.hset("{}Nbot:TXreplys".format(BOT_ID),tx,text)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRtext.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRtext.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 		
 		if message.sticker:
 			ID = message.sticker.file_id
 			redis.hset("{}Nbot:STreplys".format(BOT_ID),tx,ID)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRst.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRst.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if message.animation:
 			ID = message.animation.file_id
 			redis.hset("{}Nbot:GFreplys".format(BOT_ID),tx,ID)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRgf.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRgf.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if message.voice:
 			ID = message.voice.file_id
 			redis.hset("{}Nbot:VOreplys".format(BOT_ID),tx,ID)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRvo.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRvo.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if message.photo:
 			ID = message.photo.file_id
 			redis.hset("{}Nbot:PHreplys".format(BOT_ID),tx,ID)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRph.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRph.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 		if message.document:
 			ID = message.document.file_id
 			redis.hset("{}Nbot:DOreplys".format(BOT_ID),tx,ID)
 			redis.hdel("{}Nbot:stepSUDO".format(BOT_ID),userID)
-			Bot("sendMessage",{"chat_id":chatID,"text":r.SRfi.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.SRfi.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
 
-	if text and (type is "supergroup" or type is "group"):
+	if text and (type is enums.ChatType.SUPERGROUP or type is enums.ChatType.GROUP):
 		if rank == "sudo":
 			if text == "وضع مجموعه المطور":
 				redis.set("{}Nbot:sudogp".format(BOT_ID),chatID)
-				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحديد المجموعه لاستلام الاشعارات \n{title} {chatID}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحديد المجموعه لاستلام الاشعارات \n{title} {chatID}","reply_to_message_id":message.id,"parse_mode":"html"})
 		if re.search("^اضف امر عام (.*)$",text):
 			cc = re.findall("^اضف امر عام (.*)$",text)
 			redis.hset("{}Nbot:stepSUDO:or".format(BOT_ID),userID,cc[0])
@@ -127,11 +127,11 @@ def sudo(client, message,redis):
 			if arrays:
 				b = BYusers({arrays},chatID,redis,client)
 				if	b is not "":
-					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		if re.search(c.setmalk, text) and Ckuser(message):
 			if re.search("@",text):
@@ -151,7 +151,7 @@ def sudo(client, message,redis):
 				elif (setcr is True or setcr is 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remmalk, text) and Ckuser(message):
 			if re.search("@",text):
@@ -171,10 +171,10 @@ def sudo(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
-	if text and (type is "private" or (type is "supergroup" or type is "group")) :
+	if text and (type is enums.ChatType.PRIVATE or (type is enums.ChatType.SUPERGROUP or type is enums.ChatType.GROUP)) :
 		if rank == "sudo":
 
 			if text == "تفعيل الاذاعه" :
@@ -183,25 +183,25 @@ def sudo(client, message,redis):
 				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
 				if get :
 					save = redis.delete("{}Nbot:bodas".format(BOT_ID))
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 			if text == "تعطيل الاذاعه" :
 				R = text.split(" ")[1]
 				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
 				get = redis.get("{}Nbot:bodas".format(BOT_ID))
 				if get :
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				else:
 					save = redis.set("{}Nbot:bodas".format(BOT_ID),1)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				
 
 
 			if re.search("^رفع نسخه احتياطيه$|^رفع نسخة احتياطية$", text):
-				msgID = Bot("sendMessage",{"chat_id":chatID,"text":"انتظر قليلاً يتم تحميل الملف ℹ️","reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})["result"]["message_id"]
+				msgID = Bot("sendMessage",{"chat_id":chatID,"text":"انتظر قليلاً يتم تحميل الملف ℹ️","reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})["result"]["message_id"]
 				fileName = message.reply_to_message.download()
 				JsonDate = json.load(open(fileName))
 				if int(JsonDate["BOT_ID"]) != int(BOT_ID):
@@ -246,7 +246,7 @@ def sudo(client, message,redis):
 				message.reply_document(f'{userID}.json',caption=f"عدد المجموعات 💬 : {len(gps)}\nتاريخ النسخه 📆 : {da}\n⎯ ⎯ ⎯ ⎯")
 			if text == "حذف مجموعه المطور":
 				redis.delete("{}Nbot:sudogp".format(BOT_ID))
-				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل الاشعارات الى الخاص","reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل الاشعارات الى الخاص","reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search("^تحويل الاساسي$|^تحويل الاساسي @(.*)$|^تحويل الاساسي [0-9]+$", text):
 				if re.search("@",text):
@@ -263,26 +263,26 @@ def sudo(client, message,redis):
 					setsudo(redis,userId)
 					date = open("./config.py").read().replace(f"SUDO = {userID}", f"SUDO = {userId}")
 					open("./config.py","w+").write(date)
-					Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل المطور الاساسي الى {userFn} {userId}","reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم تحويل المطور الاساسي الى {userFn} {userId}","reply_to_message_id":message.id,"parse_mode":"html"})
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
 		if re.search(c.STreplyBOT, text):
 			tx = text.replace(c.RPreplyBOT,"")
 			if redis.hexists("{}Nbot:TXreplys".format(BOT_ID,chatID),tx):
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:STreplys".format(BOT_ID,chatID),tx):
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:GFreplys".format(BOT_ID,chatID),tx):
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:VOreplys".format(BOT_ID,chatID),tx):
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			else:
 				redis.hset("{}Nbot:stepSUDO".format(BOT_ID),userID,tx)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Sendreply % tx,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Sendreply % tx,"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
 			
 
 
@@ -290,35 +290,35 @@ def sudo(client, message,redis):
 			tx = text.replace(c.RPdreplyBOT,"")
 			if redis.hexists("{}Nbot:TXreplys".format(BOT_ID,chatID),tx):
 				redis.hdel("{}Nbot:TXreplys".format(BOT_ID,chatID),tx)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:STreplys".format(BOT_ID,chatID),tx):
 				redis.hdel("{}Nbot:STreplys".format(BOT_ID,chatID),tx)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:GFreplys".format(BOT_ID,chatID),tx):
 				redis.hdel("{}Nbot:GFreplys".format(BOT_ID,chatID),tx)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			elif redis.hexists("{}Nbot:VOreplys".format(BOT_ID,chatID),tx):
 				redis.hdel("{}Nbot:GFreplys".format(BOT_ID,chatID),tx)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Drp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Norp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Norp.format(tx),"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.ReplylistBOT, text):
 			reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylistBOT","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylistBOT","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylistBOT","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylistBOT","",userID])),]])
-			Bot("sendMessage",{"chat_id":chatID,"text":r.blocklist.format(text,title),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.blocklist.format(text,title),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":reply_markup})
 
 		if rank is "sudo" or rank is "asudo":
 			if text == c.remfiles:
 				onlyfiles = [f for f in listdir("files") if isfile(join("files", f))]
 				array = []
 				if not onlyfiles:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles2,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles2,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 					return False
 				for f in onlyfiles:
 					array.append([InlineKeyboardButton(f,callback_data=json.dumps(["delF",f,userID]))])
 				array.append([InlineKeyboardButton(c.remallfiles,callback_data=json.dumps(["delFa","",userID]))])
 				kb = InlineKeyboardMarkup(array)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.dlFiles,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.dlFiles,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
 
 
 			if text == c.files:
@@ -326,7 +326,7 @@ def sudo(client, message,redis):
 				filesR = redis.smembers("{}Nbot:botfiles".format(BOT_ID))
 				array = []
 				if not onlyfiles:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles2,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles2,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 					return False
 				for f in onlyfiles:
 					if f in filesR:
@@ -335,13 +335,13 @@ def sudo(client, message,redis):
 						s = r.false
 					array.append([InlineKeyboardButton(f+" "+s,callback_data=json.dumps(["au",f,userID]))])
 				kb = InlineKeyboardMarkup(array)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Files,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Files,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
 
 			if text == c.ADDfiles:
 				url = "https://raw.githubusercontent.com/TshAkEAb/TshakeV2-files/master/files"
 				req = requests.get(url).text
 				if not re.search(".py",req):
-					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles,"reply_to_message_id":message.message_id,"disable_web_page_preview":True,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.NOaddfiles,"reply_to_message_id":message.id,"disable_web_page_preview":True,"parse_mode":"html"})
 					return False
 
 				files = req.split("\n")
@@ -349,7 +349,7 @@ def sudo(client, message,redis):
 				for f in files:
 					array.append([InlineKeyboardButton(f,callback_data=json.dumps(["dlf",f,userID]))])
 				kb = InlineKeyboardMarkup(array)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.addFiles,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.addFiles,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":kb})
 
 
 			if text == c.Ubot:
@@ -383,17 +383,17 @@ def sudo(client, message,redis):
 					f.write(out)
 					f.close()
 					
-				Bot("sendMessage",{"chat_id":chatID,"text":r.Wres,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.Wres,"reply_to_message_id":message.id,"parse_mode":"html"})
 				run(redis,chatID)
 				
 			if re.search(c.setSudoC, text):
 				tx = text.replace(c.RsetSudoC,"")
-				v = Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				v = Bot("sendMessage",{"chat_id":chatID,"text":tx,"reply_to_message_id":message.id,"parse_mode":"html"})
 				if v["ok"]:
 					redis.set("{}Nbot:SHOWsudos".format(BOT_ID),tx)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShow,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShow,"reply_to_message_id":message.id,"parse_mode":"html"})
 				elif v["ok"] == False:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.sudosList, text) and Ckuser(message):
 				text = text.replace("مسح ","")
@@ -401,9 +401,9 @@ def sudo(client, message,redis):
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","sudos",userID]))]])
 				if	b is not "":
-					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 			if re.search(c.setsudos, text) and Ckuser(message):
 				if re.search("@",text):
@@ -424,7 +424,7 @@ def sudo(client, message,redis):
 						send_msg("UD",client, message,r.setRK,"",getUser,redis)
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.remsudos, text) and Ckuser(message):
 				if re.search("@",text):
@@ -444,7 +444,7 @@ def sudo(client, message,redis):
 					elif not setcr:
 						send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 				except Exception as e:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 			
 
 
@@ -455,9 +455,9 @@ def sudo(client, message,redis):
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","asudo",userID]))]])
 				if	b is not "":
-					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 			if re.search(c.setasudo, text) and Ckuser(message):
 				if re.search("@",text):
@@ -478,7 +478,7 @@ def sudo(client, message,redis):
 						send_msg("UD",client, message,r.setRK,"",getUser,redis)
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.remasudo, text) and Ckuser(message):
 				if re.search("@",text):
@@ -498,7 +498,7 @@ def sudo(client, message,redis):
 					elif not setcr:
 						send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 				except Exception as e:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 			
 
 			if re.search(c.banall, text):
@@ -518,18 +518,18 @@ def sudo(client, message,redis):
 					GetGprank = GPranks(userId,chatID)
 					if Getrank == "bot":return False
 					if Getrank == "sudos" or Getrank == "sudo":
-						Bot("sendMessage",{"chat_id":chatID,"text":r.cTsudo,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.cTsudo,"reply_to_message_id":message.id,"parse_mode":"html"})
 						return False
 					if redis.sismember("{}Nbot:bans".format(BOT_ID),userId):
-						Bot("sendMessage",{"chat_id":chatID,"text":r.Dbanall.format(BY),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.Dbanall.format(BY),"reply_to_message_id":message.id,"parse_mode":"html"})
 					else:
 						redis.sadd("{}Nbot:bans".format(BOT_ID),userId)
-						Bot("sendMessage",{"chat_id":chatID,"text":r.banall.format(BY),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.banall.format(BY),"reply_to_message_id":message.id,"parse_mode":"html"})
 						if (GetGprank == "member" or GetGprank == "restricted"):
 							Bot("kickChatMember",{"chat_id":chatID,"user_id":userId})
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.unbanall, text):
 				if re.search("@",text):
@@ -553,7 +553,7 @@ def sudo(client, message,redis):
 						send_msg("BNN",client, message,r.Dunbanall,"bans",getUser,redis)
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.TKall, text):
 				if re.search("@",text):
@@ -570,7 +570,7 @@ def sudo(client, message,redis):
 					Getrank = isrank(redis,userId,chatID)
 					if Getrank == "bot":return False
 					if Getrank == "sudos" or Getrank == "sudo":
-						Bot("sendMessage",{"chat_id":chatID,"text":r.cTsudo,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.cTsudo,"reply_to_message_id":message.id,"parse_mode":"html"})
 						return False
 					if redis.sismember("{}Nbot:restricteds".format(BOT_ID),userId):
 						send_msg("BNN",client, message,r.Drestrictedall,"restricteds",getUser,redis)
@@ -579,7 +579,7 @@ def sudo(client, message,redis):
 						redis.sadd("{}Nbot:restricteds".format(BOT_ID),userId)
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.unTKall, text):
 				if re.search("@",text):
@@ -602,23 +602,23 @@ def sudo(client, message,redis):
 						send_msg("BNN",client, message,r.Dunrestrictedall,"restricteds",getUser,redis)
 				except Exception as e:
 					print(e)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 			if re.search(c.Alllist, text) and Ckuser(message):
 				reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STbanall,callback_data=json.dumps(["showbanall","",userID])),InlineKeyboardButton(c.STtkall,callback_data=json.dumps(["showtkall","",userID])),]])
-				Bot("sendMessage",{"chat_id":chatID,"text":r.banlist,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.banlist,"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":reply_markup})
 			
 			
 			if re.search(c.stats, text) and Ckuser(message):
 				pr = redis.scard("{}Nbot:privates".format(BOT_ID))
 				gp = redis.scard("{}Nbot:groups".format(BOT_ID))
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.CKgps,callback_data=json.dumps(["ckGPs","",userID]))]])
-				Bot("sendMessage",{"chat_id":chatID,"text":r.showstats.format(gp,pr),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.showstats.format(gp,pr),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
 			
 			if re.search(c.fwdall, text) and message.reply_to_message:
-				Bot("forwardMessage",{"chat_id":chatID,"from_chat_id":chatID,"message_id":message.reply_to_message.message_id})
+				Bot("forwardMessage",{"chat_id":chatID,"from_chat_id":chatID,"message_id":message.reply_to_message.id})
 				reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["fwdtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["fwdtoprivates","",userID])),]])
-				Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 
 			if re.search(c.showGPS, text) and Ckuser(message):
 				IDS = redis.smembers("{}Nbot:groups".format(BOT_ID))
@@ -639,10 +639,10 @@ def sudo(client, message,redis):
 				get = redis.get("{}Nbot:autoaddbot".format(BOT_ID))
 				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
 				if get :
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				else:
 					save = redis.set("{}Nbot:autoaddbot".format(BOT_ID),1)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 			if text == c.Uauto :
 				R = text.split(" ")[1]
@@ -650,19 +650,19 @@ def sudo(client, message,redis):
 				get = redis.get("{}Nbot:autoaddbot".format(BOT_ID))
 				if get :
 					save = redis.delete("{}Nbot:autoaddbot".format(BOT_ID))
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 			
 			if text == c.Lleave :
 				R = text.split(" ")[1]
 				get = redis.get("{}Nbot:leaveaddbot".format(BOT_ID))
 				BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
 				if get :
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				else:
 					save = redis.set("{}Nbot:leaveaddbot".format(BOT_ID),1)
-					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.ADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 			if text == c.Uleave :
 				R = text.split(" ")[1]
@@ -670,14 +670,14 @@ def sudo(client, message,redis):
 				get = redis.get("{}Nbot:leaveaddbot".format(BOT_ID))
 				if get :
 					save = redis.delete("{}Nbot:leaveaddbot".format(BOT_ID))
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.unADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 			
 			if re.search(c.Setauto, text):
 				N = text.split(" ")[2]
 				redis.set("{}Nbot:autoaddbotN".format(BOT_ID),int(N))
-				Bot("sendMessage",{"chat_id":chatID,"text":r.SetAuto.format(N),"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.SetAuto.format(N),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 			if re.search(c.leaveChat,text):
 				ch = text.split(" ")[1]
 				Bot("leaveChat",{"chat_id":ch})
@@ -685,7 +685,7 @@ def sudo(client, message,redis):
 				redis.sadd("{}Nbot:disabledgroups".format(BOT_ID),ch)
 				NextDay_Date = datetime.datetime.today() + datetime.timedelta(days=1)
 				redis.hset("{}Nbot:disabledgroupsTIME".format(BOT_ID),ch,str(NextDay_Date))
-				Bot("sendMessage",{"chat_id":chatID,"text":r.DoneleaveChat,"reply_to_message_id":message.message_id,"parse_mode":"html","disable_web_page_preview":True})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.DoneleaveChat,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
 
@@ -694,92 +694,92 @@ def sudo(client, message,redis):
 				if rank == "asudo" and redis.get("{}Nbot:bodas".format(BOT_ID)):
 					return 0
 				if message.reply_to_message.text:
-					v = Bot("sendMessage",{"chat_id":chatID,"text":message.reply_to_message.text,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendMessage",{"chat_id":chatID,"text":message.reply_to_message.text,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.photo:
 					ID = message.reply_to_message.photo.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendphoto",{"chat_id":chatID,"photo":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendphoto",{"chat_id":chatID,"photo":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.voice:
 					ID = message.reply_to_message.voice.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendvoice",{"chat_id":chatID,"voice":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendvoice",{"chat_id":chatID,"voice":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.audio:
 					ID = message.reply_to_message.audio.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendaudio",{"chat_id":chatID,"audio":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendaudio",{"chat_id":chatID,"audio":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.document:
 					ID = message.reply_to_message.document.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("senddocument",{"chat_id":chatID,"document":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("senddocument",{"chat_id":chatID,"document":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 
 
 				if message.reply_to_message.sticker:
 					ID = message.reply_to_message.sticker.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendsticker",{"chat_id":chatID,"sticker":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendsticker",{"chat_id":chatID,"sticker":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.animation:
 					ID = message.reply_to_message.animation.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendanimation",{"chat_id":chatID,"animation":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendanimation",{"chat_id":chatID,"animation":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.video:
 					ID = message.reply_to_message.video.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendvideo",{"chat_id":chatID,"video":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendvideo",{"chat_id":chatID,"video":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 
 				if message.reply_to_message.video_note:
 					ID = message.reply_to_message.video_note.file_id
 					CP = message.reply_to_message.caption
-					v = Bot("sendVideoNote",{"chat_id":chatID,"video_note":ID,"caption":CP,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+					v = Bot("sendVideoNote",{"chat_id":chatID,"video_note":ID,"caption":CP,"reply_to_message_id":message.id,"parse_mode":"html"})
 					if v["ok"]:
 						reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STgroup,callback_data=json.dumps(["sendtogroups","",userID])),InlineKeyboardButton(c.STprivates,callback_data=json.dumps(["sendtoprivates","",userID])),]])
-						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html","reply_markup":reply_markup})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.sendto,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html","reply_markup":reply_markup})
 					elif v["ok"] == False:
-						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.message_id,"parse_mode":"html"})
+						Bot("sendMessage",{"chat_id":chatID,"text":r.DsetSudosShowE,"reply_to_message_id":message.reply_to_message.id,"parse_mode":"html"})
 

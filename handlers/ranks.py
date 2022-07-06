@@ -37,12 +37,12 @@ def ranks(client, message,redis):
 					redis.sadd("{}Nbot:{}:TXoeders".format(BOT_ID,chatID),ad)
 				orders += f"{i} - {text} > {tx}\n"
 				i+=1
-			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الاوامر الاتيه \n⎯ ⎯ ⎯ ⎯\n{orders}\n⎯ ⎯ ⎯ ⎯","reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":f"✅꒐ تم اضافه الاوامر الاتيه \n⎯ ⎯ ⎯ ⎯\n{orders}\n⎯ ⎯ ⎯ ⎯","reply_to_message_id":message.id,"disable_web_page_preview":True})
 
 		if re.search(c.del_ac, text) and Ckuser(message):
 			H = "acreator"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
-			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.id,"disable_web_page_preview":True})
 
 		if re.search(c.acreators, text) and Ckuser(message):
 			arrays = redis.smembers("{}Nbot:{}:acreator".format(BOT_ID,chatID))
@@ -50,11 +50,11 @@ def ranks(client, message,redis):
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","acreator",userID]))]])
 				if	b is not "":
-					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		if re.search(c.setacreator, text) and Ckuser(message):
 			if re.search("@",text):
@@ -74,7 +74,7 @@ def ranks(client, message,redis):
 				elif (setcr is True or setcr is 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remacreator, text) and Ckuser(message):
 			if re.search("@",text):
@@ -94,14 +94,14 @@ def ranks(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
 	if (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator"):
 		if re.search(c.del_cr, text) and Ckuser(message):
 			H = "creator"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
-			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.id,"disable_web_page_preview":True})
 
 		if re.search(c.creators, text) and Ckuser(message):
 			arrays = redis.smembers("{}Nbot:{}:creator".format(BOT_ID,chatID))
@@ -109,11 +109,11 @@ def ranks(client, message,redis):
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","creator",userID]))]])
 				if	b is not "":
-					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
-					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		if re.search(c.setcreator, text) and Ckuser(message):
 			if re.search("@",text):
@@ -133,7 +133,7 @@ def ranks(client, message,redis):
 				elif (setcr is True or setcr is 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remcreator, text) and Ckuser(message):
 			if re.search("@",text):
@@ -153,18 +153,18 @@ def ranks(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 	if (rank is "sudo"  or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator" or rank is "creator" or rank is "owner"):
 
 		if re.search(c.del_ad, text) and Ckuser(message):
 			H = "admin"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
-			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.id,"disable_web_page_preview":True})
 		if re.search(c.del_vp, text) and Ckuser(message):
 			H = "vip"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
-			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.id,"disable_web_page_preview":True})
 
 
 		if re.search(c.admins, text) and Ckuser(message):
@@ -172,9 +172,9 @@ def ranks(client, message,redis):
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","admin",userID]))]])
 			if  b is not "":
-				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		if re.search(c.vips, text) and Ckuser(message):
 			
@@ -182,9 +182,9 @@ def ranks(client, message,redis):
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","vip",userID]))]])
 			if  b is not "":
-				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		orad = redis.hget("{}Nbot:adminor:cb".format(BOT_ID),chatID) or c.setadmin
 		orad2 = redis.hget("{}Nbot:adminor:cb2".format(BOT_ID),chatID) or c.setadmin2
@@ -207,7 +207,7 @@ def ranks(client, message,redis):
 				elif (setcr is True or setcr is 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remadmin, text) and Ckuser(message):
 			if re.search("@",text):
@@ -227,7 +227,7 @@ def ranks(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 		
 		orvip = redis.hget("{}Nbot:vipor:cb".format(BOT_ID),chatID) or c.setvip
 		orvip2 = redis.hget("{}Nbot:vipor:cb2".format(BOT_ID),chatID) or c.setvip2
@@ -253,7 +253,7 @@ def ranks(client, message,redis):
 				import traceback
 				traceback.print_exc()
 				print(e)
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remvip, text) and Ckuser(message):
 			if re.search("@",text):
@@ -273,22 +273,22 @@ def ranks(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 	if (rank is "sudo" or rank is "sudos" or rank is "asudo" or rank is "malk" or rank is "acreator" or rank is "creator"):
 		if re.search(c.del_ow, text) and Ckuser(message):
 			H = "owner"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
-			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.message_id,"disable_web_page_preview":True})
+			Bot("sendMessage",{"chat_id":chatID,"text":r.DoneDelList,"reply_to_message_id":message.id,"disable_web_page_preview":True})
 
 		if re.search(c.owners, text) and Ckuser(message):
 			arrays = redis.smembers("{}Nbot:{}:owner".format(BOT_ID,chatID))
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","owner",userID]))]])
 			if  b is not "":
-				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.message_id,"parse_mode":"markdown"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 
 		orow = redis.hget("{}Nbot:owneror:cb".format(BOT_ID),chatID) or c.setowner
 		orow2 = redis.hget("{}Nbot:owneror:cb2".format(BOT_ID),chatID) or c.setowner2
@@ -311,7 +311,7 @@ def ranks(client, message,redis):
 				elif (setcr is True or setcr is 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 		if re.search(c.remowner, text) and Ckuser(message):
 			if re.search("@",text):
@@ -331,4 +331,4 @@ def ranks(client, message,redis):
 				elif not setcr:
 					send_msg("UD",client, message,r.DremRK,"",getUser,redis)
 			except Exception as e:
-				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.message_id,"parse_mode":"html"})
+				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})

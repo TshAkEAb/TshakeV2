@@ -8,6 +8,7 @@ except Exception as e:
   API_HASH = '9f4461079f30757ca0a4c23e14bd523f'
 
   out ="""
+from pyrogram import enums
 API_ID = 793178
 API_HASH = '9f4461079f30757ca0a4c23e14bd523f'
 """

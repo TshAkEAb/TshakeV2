@@ -44,7 +44,7 @@ def nf(client, message,redis):
     if message.pinned_message and userID != int(BOT_ID):
       if redis.sismember("{}Nbot:Lpin".format(BOT_ID),chatID) and GPranks(userID,chatID) != "creator":
         ID = redis.hget("{}Nbot:pinmsgs".format(BOT_ID),chatID)
-        Bot("unpinChatMessage",{"chat_id":chatID,"message_id":message.pinned_message.message_id})
+        Bot("unpinChatMessage",{"chat_id":chatID,"message_id":message.pinned_message.id})
 
     
     if message.new_chat_members:
@@ -71,7 +71,7 @@ def nf(client, message,redis):
             kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.no, callback_data=json.dumps(["kickcheck","",userId])),InlineKeyboardButton(r.yes, callback_data=json.dumps(["delcheck","",userId]))]])
             T ="<a href=\"tg://user?id={}\">{}</a>".format(userId,Name(userFn))
             random.shuffle(kb.inline_keyboard[0])
-            Bot("sendMessage",{"chat_id":chatID,"text":r.checkmem.format(T),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+            Bot("sendMessage",{"chat_id":chatID,"text":r.checkmem.format(T),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
         else:
           for mb in message.new_chat_members:
             userFn = mb.first_name
@@ -85,18 +85,18 @@ def nf(client, message,redis):
             kb = InlineKeyboardMarkup([[InlineKeyboardButton(aw, callback_data=json.dumps(["certain","",userId])),InlineKeyboardButton(r1, callback_data=json.dumps(["kickcheck","",userId])),InlineKeyboardButton(r2, callback_data=json.dumps(["kickcheck","",userId]))]])
             random.shuffle(kb.inline_keyboard[0])
             T ="<a href=\"tg://user?id={}\">{}</a>".format(userId,Name(userFn))
-            Bot("sendMessage",{"chat_id":chatID,"text":r.checkmem2.format(T,q),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
+            Bot("sendMessage",{"chat_id":chatID,"text":r.checkmem2.format(T,q),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":kb})
   
 
       if redis.sismember("{}Nbot:Ljoin".format(BOT_ID),chatID):#17
-        Bot("deleteMessage",{"chat_id":chatID,"message_id":message.message_id})
+        Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
         
       if message.new_chat_members and not redis.sismember("{}Nbot:welcomeSend".format(BOT_ID),chatID):
         wl = (redis.hget("{}Nbot:welcome".format(BOT_ID),chatID) or "")
         userId = message.new_chat_members[0].id
         userFn = message.new_chat_members[0].first_name
         T ="<a href=\"tg://user?id={}\">{}</a>".format(userId,Name(userFn))
-        Bot("sendMessage",{"chat_id":chatID,"text":wl.format(us=T),"reply_to_message_id":message.message_id,"parse_mode":"html"})
+        Bot("sendMessage",{"chat_id":chatID,"text":wl.format(us=T),"reply_to_message_id":message.id,"parse_mode":"html"})
         
       if message.new_chat_members:
         userId = message.new_chat_members[0].id
