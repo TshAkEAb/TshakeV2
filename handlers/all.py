@@ -70,7 +70,7 @@ def allGP(client, message,redis):
     if text == "عدد الكروب" and (rank is not False or rank is not  0 ):
       from pyrogram.raw.functions.channels import GetFullChannel
       chat = client.resolve_peer(chatID)
-      full_chat = client.send(GetFullChannel(channel=chat)).full_chat
+      full_chat = client.invoke(GetFullChannel(channel=chat)).full_chat
       Bot("sendMessage",{"chat_id":chatID,"text":r.gpinfo.format(message.chat.title,full_chat.participants_count,full_chat.admins_count,full_chat.kicked_count,full_chat.banned_count,message.id),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
     if text == c.ID and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID) and not message.reply_to_message:
       Ch = True
