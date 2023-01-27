@@ -36,7 +36,7 @@ def delete(client, message,redis):
         Bot("sendMessage",{"chat_id":chatID,"text":r.kickme,"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":reply_markup})
 
 
-    if re.findall("[Hh][Tt][Tt][Pp][Ss]:/|[Hh][Tt][Tt][Pp]://|.[Ii][Rr]|.[Cc][Oo][Mm]|.[Oo][Rr][Gg]|.[Ii][Nn][Ff][Oo]|[Ww][Ww][Ww]|.[Tt][Kk]|.[Mm][Ee]", text):
+    if re.match("^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$", text):
       if redis.sismember("{}Nbot:Llink".format(BOT_ID),chatID): #1
         Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
         if redis.sismember("{}Nbot:Llink:res".format(BOT_ID),chatID):
