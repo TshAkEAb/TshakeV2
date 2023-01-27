@@ -65,7 +65,7 @@ def delete(client, message,redis):
           Bot("restrictChatMember",{"chat_id": chatID,"user_id": userId,"can_send_messages": 0,"can_send_media_messages": 0,"can_send_other_messages": 0,
             "can_send_polls": 0,"can_change_info": 0,"can_add_web_page_previews": 0,"can_pin_messages": 0,"can_invite_users": 0,})
 
-    if re.findall("[a-zA-Z0-9$@$!%*?&#^-_. +]+", text):
+    if re.findall("[a-zA-Z0-9$@$!%*?&#^-_.+]+", text):
       if redis.sismember("{}Nbot:Lenglish".format(BOT_ID),chatID):#4
         Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
         if redis.sismember("{}Nbot:Lenglish:res".format(BOT_ID),chatID):
@@ -109,7 +109,7 @@ def delete(client, message,redis):
 
           break
 
-  if message.via_bot:
+  if message.via_bot and message.via_bot.username != "HEBot":
     if redis.sismember("{}Nbot:Linline".format(BOT_ID),chatID):#7
       Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
       if redis.sismember("{}Nbot:Linline:res".format(BOT_ID),chatID):
