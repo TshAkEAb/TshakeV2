@@ -264,7 +264,7 @@ def updateCallback(client, callback_query,redis):
       edits = (redis.hget("{}Nbot:{}:edits".format(BOT_ID,chatID),userID) or 0)
       rate = int(msgs)*100/20000
       age = getAge(userID,r)
-      reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(Name(userFN),url="t.me/zx_xx")],[InlineKeyboardButton(r.Rrank.format(t),url="t.me/zx_xx")],[InlineKeyboardButton(r.Rmsgs.format(msgs),url="t.me/zx_xx")],[InlineKeyboardButton(r.Rrate.format(str(rate)+"%"),url="t.me/zx_xx")],[InlineKeyboardButton(r.Redits.format(edits),url="t.me/zx_xx")],[InlineKeyboardButton(r.Rage.format(age),url="t.me/zx_xx")]])
+      reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(Name(userFN),url="t.me/Hbbbb")],[InlineKeyboardButton(r.Rrank.format(t),url="t.me/Hbbbb")],[InlineKeyboardButton(r.Rmsgs.format(msgs),url="t.me/Hbbbb")],[InlineKeyboardButton(r.Rrate.format(str(rate)+"%"),url="t.me/Hbbbb")],[InlineKeyboardButton(r.Redits.format(edits),url="t.me/Hbbbb")],[InlineKeyboardButton(r.Rage.format(age),url="t.me/Hbbbb")]])
       Bot("editMessageReplyMarkup",{"chat_id":chatID,"message_id":message_id,"disable_web_page_preview":True,"reply_markup":reply_markup})
     if re.search("ShowO",date[0]):
       T = date[0].replace("ShowO","")

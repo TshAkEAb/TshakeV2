@@ -61,10 +61,10 @@ def updateHandlers(client, message,redis):
 							setrank(redis,"malk",userId,chatID,"one")
 					add = redis.sadd("{}Nbot:groups".format(BOT_ID),chatID)
 					Bot("exportChatInviteLink",{"chat_id":chatID})
-					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
+					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/Hbbbb")]])
 					Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
 					sendTO = (redis.get("{}Nbot:sudogp".format(BOT_ID)) or SUDO)
-					get = (redis.hget("{}Nbot:links".format(BOT_ID),chatID) or GetLink(chatID) or "https://t.me/zx_xx")
+					get = (redis.hget("{}Nbot:links".format(BOT_ID),chatID) or GetLink(chatID) or "https://t.me/Hbbbb")
 					kb = InlineKeyboardMarkup([[InlineKeyboardButton("الرابط 🖇", url=get)]])
 					BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,message.from_user.first_name)
 					Bot("sendMessage",{"chat_id":sendTO,"text":f"تم تفعيل مجموعه جديدة ℹ️\nاسم المجموعه : {title}\nايدي المجموعه : {chatID}\nالمنشئ : {BY}\n⎯ ⎯ ⎯ ⎯","parse_mode":"html","reply_markup":kb})
@@ -86,7 +86,7 @@ def updateHandlers(client, message,redis):
 					redis.sadd("{}Nbot:disabledgroups".format(BOT_ID),chatID)
 					NextDay_Date = datetime.datetime.today() + datetime.timedelta(days=1)
 					redis.hset("{}Nbot:disabledgroupsTIME".format(BOT_ID),chatID,str(NextDay_Date))
-					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
+					kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/Hbbbb")]])
 					Bot("sendMessage",{"chat_id":chatID,"text":r.disabl.format(title),"reply_to_message_id":message.message_id,"parse_mode":"markdown","reply_markup":kb})
 		if  group is True:
 			t = threading.Thread(target=allGP,args=(client, message,redis))
@@ -155,7 +155,7 @@ def updateHandlers(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.sudostart,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
 				return 0
 			getbot = client.get_me()
-			kb = InlineKeyboardMarkup([[InlineKeyboardButton("TshakeTeam", url="t.me/zx_xx")]])
+			kb = InlineKeyboardMarkup([[InlineKeyboardButton("TshakeTeam", url="t.me/Hbbbb")]])
 			Bot("sendMessage",{"chat_id":chatID,"text":r.botstart.format(getbot.first_name,getbot.username),"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
 			
 		if text and re.search("^/start (.*)$",text):

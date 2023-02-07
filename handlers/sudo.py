@@ -282,7 +282,7 @@ def sudo(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Yrp.format(tx),"reply_to_message_id":message.message_id,"parse_mode":"html"})
 			else:
 				redis.hset("{}Nbot:stepSUDO".format(BOT_ID),userID,tx)
-				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/zx_xx")]])
+				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.MoreInfo, url="t.me/Hbbbb")]])
 				Bot("sendMessage",{"chat_id":chatID,"text":r.Sendreply % tx,"reply_to_message_id":message.message_id,"parse_mode":"html","reply_markup":kb})
 			
 
