@@ -189,11 +189,11 @@ def delete(client, message,redis):
             "can_send_polls": 0,"can_change_info": 0,"can_add_web_page_previews": 0,"can_pin_messages": 0,"can_invite_users": 0,})
 
   if message.new_chat_members:
-    if message.new_chat_members[0].is_bot:
+    if message.new_chat_member.user.is_bot:
       if redis.sismember("{}Nbot:Lbots".format(BOT_ID),chatID):#16
-        first_name = message.new_chat_members[0].first_name
-        username = message.new_chat_members[0].username
-        Bot("kickChatMember",{"chat_id":chatID,"user_id":message.new_chat_members[0].id})
+        first_name = message.new_chat_member.user.first_name
+        username = message.new_chat_member.user.username
+        Bot("kickChatMember",{"chat_id":chatID,"user_id":message.new_chat_member.user.id})
         Bot("sendMessage",{"chat_id":chatID,"text":r.kickbotadd.format(username,first_name),"reply_to_message_id":message.id,"parse_mode":"html"})
     if redis.sismember("{}Nbot:Ljoin".format(BOT_ID),chatID):#17
       Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
