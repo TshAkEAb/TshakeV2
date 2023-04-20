@@ -106,8 +106,28 @@ def updateAuto(client, message,redis):
             redis.hdel("{}Nbot:disabledgroupsTIME".format(BOT_ID),chatID)
             v = Bot("sendMessage",{"chat_id":chatID,"text":r.doneadd2.format(title),"parse_mode":"markdown"})
 
+def updateAuto2(client, message,redis):
+    chatID = message.chat.id
+    userID = message.from_user.id
+    c = importlib.import_module("lang.arcmd")
+    r = importlib.import_module("lang.arreply")
+    group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
+    if group is True:
+        if message.new_chat_member:
+            if message.new_chat_member.user.is_bot and message.from_user.id != int(BOT_ID):
+                if redis.sismember("{}Nbot:Lbots".format(BOT_ID),chatID):
+                    first_name = message.new_chat_member.user.first_name
+                    username = message.new_chat_member.user.username
+                    Bot("kickChatMember",{"chat_id":chatID,"user_id":message.new_chat_member.user.id})
+                    Bot("sendMessage",{"chat_id":chatID,"text":r.kickbotadd.format(username,first_name),"parse_mode":"html","disable_web_page_preview":True})
+            if redis.sismember("{}Nbot:Ljoin".format(BOT_ID),chatID):
+                Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
 @app.on_chat_member_updated(filters.group)
 def updatemember(client, message):
+    if  message.new_chat_member and message.new_chat_member.user.is_bot and message.new_chat_member.user.id != int(BOT_ID):
+        t = threading.Thread(target=updateAuto2,args=(client, message,R))
+        t.daemon = True
+        t.start()
     if message.new_chat_member and message.new_chat_member.user.id == int(BOT_ID) and message.new_chat_member.status == enums.ChatMemberStatus.ADMINISTRATOR:
         t = threading.Thread(target=updateAuto,args=(client, message,R))
         t.daemon = True
