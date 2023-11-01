@@ -82,7 +82,7 @@ def sudo(client, message,redis):
 
 
 
-	if text and (type is enums.ChatType.SUPERGROUP or type is enums.ChatType.GROUP):
+	if text and (type == enums.ChatType.SUPERGROUP or type == enums.ChatType.GROUP):
 		if rank == "sudo":
 			if text == "وضع مجموعه المطور":
 				redis.set("{}Nbot:sudogp".format(BOT_ID),chatID)
@@ -126,7 +126,7 @@ def sudo(client, message,redis):
 			arrays = redis.get("{}Nbot:{}:malk".format(BOT_ID,chatID))
 			if arrays:
 				b = BYusers({arrays},chatID,redis,client)
-				if	b is not "":
+				if	b != "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown"})
 				else:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -146,9 +146,9 @@ def sudo(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"malk",userId,chatID,"one")
-				if setcr is "malk":
+				if setcr == "malk":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
@@ -174,7 +174,7 @@ def sudo(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
-	if text and (type is enums.ChatType.PRIVATE or (type is enums.ChatType.SUPERGROUP or type is enums.ChatType.GROUP)) :
+	if text and (type == enums.ChatType.PRIVATE or (type == enums.ChatType.SUPERGROUP or type == enums.ChatType.GROUP)) :
 		if rank == "sudo":
 
 			if text == "تفعيل الاذاعه" :
@@ -307,7 +307,7 @@ def sudo(client, message,redis):
 			reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(c.STword,callback_data=json.dumps(["showreplylistBOT","",userID])),InlineKeyboardButton(c.STgifs,callback_data=json.dumps(["showGFreplylistBOT","",userID])),],[InlineKeyboardButton(c.STvoice,callback_data=json.dumps(["showVOreplylistBOT","",userID])),InlineKeyboardButton(c.STsticker,callback_data=json.dumps(["showSTreplylistBOT","",userID])),]])
 			Bot("sendMessage",{"chat_id":chatID,"text":r.blocklist.format(text,title),"reply_to_message_id":message.id,"parse_mode":"html","reply_markup":reply_markup})
 
-		if rank is "sudo" or rank is "asudo":
+		if rank == "sudo" or rank == "asudo":
 			if text == c.remfiles:
 				onlyfiles = [f for f in listdir("files") if isfile(join("files", f))]
 				array = []
@@ -400,7 +400,7 @@ def sudo(client, message,redis):
 				arrays = redis.smembers("{}Nbot:sudos".format(BOT_ID,chatID))
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","sudos",userID]))]])
-				if	b is not "":
+				if	b != "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -418,9 +418,9 @@ def sudo(client, message,redis):
 					userId = getUser.id
 					userFn = getUser.first_name
 					setcr = setsudos(redis,userId)
-					if setcr is "sudos":
+					if setcr == "sudos":
 						send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-					elif (setcr is True or setcr is 1):
+					elif (setcr == True or setcr == 1):
 						send_msg("UD",client, message,r.setRK,"",getUser,redis)
 				except Exception as e:
 					print(e)
@@ -454,7 +454,7 @@ def sudo(client, message,redis):
 				arrays = redis.smembers("{}Nbot:asudo".format(BOT_ID,chatID))
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","asudo",userID]))]])
-				if	b is not "":
+				if	b != "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -472,9 +472,9 @@ def sudo(client, message,redis):
 					userId = getUser.id
 					userFn = getUser.first_name
 					setcr = setasudo(redis,userId)
-					if setcr is "sudos":
+					if setcr == "sudos":
 						send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-					elif (setcr is True or setcr is 1):
+					elif (setcr == True or setcr == 1):
 						send_msg("UD",client, message,r.setRK,"",getUser,redis)
 				except Exception as e:
 					print(e)

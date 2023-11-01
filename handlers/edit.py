@@ -13,11 +13,11 @@ def edit(client, message,redis):
     group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
     redis.hincrby("{}Nbot:{}:edits".format(BOT_ID,chatID),userID)
     if not message.outgoing:
-        if (rank is False or rank is 0) and group is True and redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID):
+        if (rank == False or rank == 0) and group == True and redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID):
             Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
-        if not (rank is "sudo" or rank is "asudo" or rank is "sudos"  or rank is "malk") and group is True and redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID) and not message.text:
+        if not (rank == "sudo" or rank == "asudo" or rank == "sudos"  or rank == "malk") and group == True and redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID) and not message.text:
             Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
-        if not (rank is "sudo" or rank is "asudo" or rank is "sudos"  or rank is "malk") and group is True and not redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID):
+        if not (rank == "sudo" or rank == "asudo" or rank == "sudos"  or rank == "malk") and group == True and not redis.sismember("{}Nbot:Ledits".format(BOT_ID),chatID):
             t = threading.Thread(target=delete,args=(client, message,redis))
             t.daemon = True
             t.start()

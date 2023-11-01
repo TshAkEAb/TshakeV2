@@ -34,7 +34,7 @@ def nf(client, message,redis):
   r = importlib.import_module("lang.arreply")
   group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
   rank = isrank(redis,userID,chatID)
-  if group is True and message.outgoing != True:
+  if group == True and message.outgoing != True:
     if message.left_chat_member:
       if message.left_chat_member.id == int(BOT_ID):
         redis.srem("{}Nbot:groups".format(BOT_ID),chatID)
@@ -48,7 +48,7 @@ def nf(client, message,redis):
 
     
     if message.new_chat_members:
-      if (rank is False or rank is 0) and GPranks(userID,chatID) == "member" and re.search("is_bot=True",str(message.new_chat_members)):
+      if (rank == False or rank == 0) and GPranks(userID,chatID) == "member" and re.search("is_bot=True",str(message.new_chat_members)):
         if redis.sismember("{}Nbot:Lbots".format(BOT_ID),chatID):
           for mb in message.new_chat_members:
             first_name = mb.first_name

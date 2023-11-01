@@ -16,7 +16,7 @@ def allGP(client, message,redis):
   userID = message.from_user.id
   chatID = message.chat.id
   username = message.from_user.username
-  if username is None:
+  if username == None:
     username = "None"
   userFN = message.from_user.first_name
   title = message.chat.title
@@ -63,11 +63,11 @@ def allGP(client, message,redis):
       Botuser = client.get_me().username
       Bot("sendMessage",{"chat_id":chatID,"text":r.dellink,"disable_web_page_preview":True,"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 
-    if re.search(c.ShowO,text) and (rank is not False or rank is not  0 or rank != "vip"):
+    if re.search(c.ShowO,text) and (rank != False or rank !=  0 or rank != "vip"):
       reply_markup = getOR(rank,r,userID)
       Bot("sendMessage",{"chat_id":chatID,"text":r.Showall,"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True,"reply_markup":reply_markup})
 
-    if text == "عدد الكروب" and (rank is not False or rank is not  0 ):
+    if text == "عدد الكروب" and (rank != False or rank !=  0 ):
       from pyrogram.raw.functions.channels import GetFullChannel
       chat = client.resolve_peer(chatID)
       full_chat = client.invoke(GetFullChannel(channel=chat)).full_chat
@@ -105,7 +105,7 @@ def allGP(client, message,redis):
     if text == c.ID and not redis.sismember("{}Nbot:IDSend".format(BOT_ID),chatID) and message.reply_to_message:
       us = message.reply_to_message.from_user.id
       rusername = message.reply_to_message.from_user.username
-      if rusername is None:
+      if rusername == None:
         rusername = "None"
       t = IDrank(redis,us,chatID,r)
       msgs = (redis.hget("{}Nbot:{}:msgs".format(BOT_ID,chatID),us) or 0)
@@ -127,7 +127,7 @@ def allGP(client, message,redis):
         getUser = client.get_users(user)
         us = getUser.id
         rusername = user
-        if rusername is None:
+        if rusername == None:
           rusername = "None"
         age = getAge(us,r)
         t = IDrank(redis,us,chatID,r)

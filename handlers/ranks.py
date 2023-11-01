@@ -17,7 +17,7 @@ def ranks(client, message,redis):
 	c = importlib.import_module("lang.arcmd")
 	r = importlib.import_module("lang.arreply")
 
-	if (rank is "sudo"  or rank is "asudo" or rank is "sudos" or rank is "malk"):
+	if (rank == "sudo"  or rank == "asudo" or rank == "sudos" or rank == "malk"):
 		if re.search("^ترتيب الاوامر$", text):
 			ar = {
 				"ا":"ايدي",
@@ -49,7 +49,7 @@ def ranks(client, message,redis):
 			if arrays:
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","acreator",userID]))]])
-				if	b is not "":
+				if	b != "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -69,9 +69,9 @@ def ranks(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"acreator",userId,chatID,"array")
-				if setcr is "acreator":
+				if setcr == "acreator":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
@@ -97,7 +97,7 @@ def ranks(client, message,redis):
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
 
-	if (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator"):
+	if (rank == "sudo" or rank == "asudo" or rank == "sudos" or rank == "malk" or rank == "acreator"):
 		if re.search(c.del_cr, text) and Ckuser(message):
 			H = "creator"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
@@ -108,7 +108,7 @@ def ranks(client, message,redis):
 			if arrays:
 				b = BYusers(arrays,chatID,redis,client)
 				kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","creator",userID]))]])
-				if	b is not "":
+				if	b != "":
 					Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 				else:
 					Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -128,9 +128,9 @@ def ranks(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"creator",userId,chatID,"array")
-				if setcr is "creator":
+				if setcr == "creator":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
@@ -155,7 +155,7 @@ def ranks(client, message,redis):
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
-	if (rank is "sudo"  or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator" or rank is "creator" or rank is "owner"):
+	if (rank == "sudo"  or rank == "asudo" or rank == "sudos" or rank == "malk" or rank == "acreator" or rank == "creator" or rank == "owner"):
 
 		if re.search(c.del_ad, text) and Ckuser(message):
 			H = "admin"
@@ -171,7 +171,7 @@ def ranks(client, message,redis):
 			arrays = redis.smembers("{}Nbot:{}:admin".format(BOT_ID,chatID))
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","admin",userID]))]])
-			if  b is not "":
+			if  b != "":
 				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -181,7 +181,7 @@ def ranks(client, message,redis):
 			arrays = redis.smembers("{}Nbot:{}:vip".format(BOT_ID,chatID))
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","vip",userID]))]])
-			if  b is not "":
+			if  b != "":
 				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -202,9 +202,9 @@ def ranks(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"admin",userId,chatID,"array")
-				if setcr is "admin":
+				if setcr == "admin":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
@@ -245,9 +245,9 @@ def ranks(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"vip",userId,chatID,"array")
-				if setcr is "vip":
+				if setcr == "vip":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				import traceback
@@ -275,7 +275,7 @@ def ranks(client, message,redis):
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})
 
-	if (rank is "sudo" or rank is "sudos" or rank is "asudo" or rank is "malk" or rank is "acreator" or rank is "creator"):
+	if (rank == "sudo" or rank == "sudos" or rank == "asudo" or rank == "malk" or rank == "acreator" or rank == "creator"):
 		if re.search(c.del_ow, text) and Ckuser(message):
 			H = "owner"
 			redis.delete("{}Nbot:{}:{}".format(BOT_ID,chatID,H))
@@ -285,7 +285,7 @@ def ranks(client, message,redis):
 			arrays = redis.smembers("{}Nbot:{}:owner".format(BOT_ID,chatID))
 			b = BYusers(arrays,chatID,redis,client)
 			kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","owner",userID]))]])
-			if  b is not "":
+			if  b != "":
 				Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
 			else:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -306,9 +306,9 @@ def ranks(client, message,redis):
 				userId = getUser.id
 				userFn = getUser.first_name
 				setcr = setrank(redis,"owner",userId,chatID,"array")
-				if setcr is "owner":
+				if setcr == "owner":
 					send_msg("UD",client, message,r.DsetRK,"",getUser,redis)
-				elif (setcr is True or setcr is 1):
+				elif (setcr == True or setcr == 1):
 					send_msg("UD",client, message,r.setRK,"",getUser,redis)
 			except Exception as e:
 				Bot("sendMessage",{"chat_id":chatID,"text":r.userNocc,"reply_to_message_id":message.id,"parse_mode":"html"})

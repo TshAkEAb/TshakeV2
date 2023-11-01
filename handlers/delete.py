@@ -25,7 +25,7 @@ def delete(client, message,redis):
     Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
   if redis.sismember("{}Nbot:bans".format(BOT_ID),userID):
     Bot("kickChatMember",{"chat_id":chatID,"user_id":userID})
-  if redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userID) and (rank is False or rank is 0):
+  if redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userID) and (rank == False or rank == 0):
     message.delete()
 
   if text :
@@ -101,7 +101,7 @@ def delete(client, message,redis):
   if message.entities :
     if redis.sismember("{}Nbot:Lmarkdown".format(BOT_ID),chatID):#6
       for entitie in message.entities:
-        if entitie.type is "text_link":
+        if entitie.type == "text_link":
           Bot("deleteMessage",{"chat_id":chatID,"message_id":message.id})
           if redis.sismember("{}Nbot:Lmarkdown:res".format(BOT_ID),chatID):
             Bot("restrictChatMember",{"chat_id": chatID,"user_id": userId,"can_send_messages": 0,"can_send_media_messages": 0,"can_send_other_messages": 0,

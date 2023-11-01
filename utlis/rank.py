@@ -3,13 +3,13 @@ from utlis.tg import Bot
 
 def setrank(redis,rank,userID,chatID,type):
 	try:
-		if type is "array":
+		if type == "array":
 			get = redis.sismember("{}Nbot:{}:{}".format(BOT_ID,chatID,rank),userID)
 			if get:
 				return rank
 			save = redis.sadd("{}Nbot:{}:{}".format(BOT_ID,chatID,rank),userID)
 			return save
-		elif type is "one":
+		elif type == "one":
 			get = redis.get("{}Nbot:{}:{}".format(BOT_ID,chatID,rank))
 			if get and int(get) == userID:
 				return rank
@@ -20,14 +20,14 @@ def setrank(redis,rank,userID,chatID,type):
 
 def remrank(redis,rank,userID,chatID,type):
 	try:
-		if type is "array":
+		if type == "array":
 			get = redis.sismember("{}Nbot:{}:{}".format(BOT_ID,chatID,rank),userID)
 			if not get:
 				return 0
 			save = redis.srem("{}Nbot:{}:{}".format(BOT_ID,chatID,rank),userID)
 			
 			return save
-		elif type is "one":
+		elif type == "one":
 			get = redis.get("{}Nbot:{}:{}".format(BOT_ID,chatID,rank))
 			if get and int(get) != userID:
 				return 0
@@ -131,7 +131,7 @@ def GPranks(userID,chatID):
 
 def IDrank(redis,userID,chatID,r):
 	rank = isrank(redis,userID,chatID)
-	if (rank is False or rank is 0):
+	if (rank == False or rank == 0):
 		T = r.Rmember
 	if rank == "sudo":
 		T = r.Rsudo
@@ -181,15 +181,15 @@ def Grank(rank,r):
 	return T
 
 def isrankDef(redis,userID,chatID,x):
-	if x is "sudos":
+	if x == "sudos":
 		get = redis.sismember("{}Nbot:sudos".format(BOT_ID),userID)
 		if get:
 			return "sudos"
-	elif x is "malk":
+	elif x == "malk":
 		get = redis.get("{}Nbot:{}:malk".format(BOT_ID,chatID))
 		if get and int(get) == userID:
 			return "malk"
-	elif x is "asudo":
+	elif x == "asudo":
 		get = redis.sismember("{}Nbot:{}".format(BOT_ID,x),userID)
 		if get:
 			return x

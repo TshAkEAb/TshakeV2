@@ -20,7 +20,7 @@ def gpcmd(client, message,redis):
   rank = isrank(redis,userID,chatID)
   text = message.text
   username = message.from_user.username
-  if username is None:
+  if username == None:
     username = "None"
   c = importlib.import_module("lang.arcmd")
   r = importlib.import_module("lang.arreply")
@@ -108,7 +108,7 @@ def gpcmd(client, message,redis):
       arrays = redis.smembers("{}Nbot:{}:muteusers".format(BOT_ID,chatID))
       b = BYusers(arrays,chatID,redis,client)
       kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delList","muteusers",userID]))]])
-      if  b is not "":
+      if  b != "":
         Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
       else:
         Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -128,7 +128,7 @@ def gpcmd(client, message,redis):
       arrays = redis.smembers("{}Nbot:{}:bans".format(BOT_ID,chatID))
       b = BYusers(arrays,chatID,redis,client)
       kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delListbans","",userID]))]])
-      if  b is not "":
+      if  b != "":
         Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
       else:
         Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -137,7 +137,7 @@ def gpcmd(client, message,redis):
       arrays = redis.smembers("{}Nbot:{}:restricteds".format(BOT_ID,chatID))
       b = BYusers(arrays,chatID,redis,client)
       kb = InlineKeyboardMarkup([[InlineKeyboardButton(r.delList.format(text), callback_data=json.dumps(["delListrestricteds","",userID]))]])
-      if  b is not "":
+      if  b != "":
         Bot("sendMessage",{"chat_id":chatID,"text":r.showlist.format(text,b),"reply_to_message_id":message.id,"parse_mode":"markdown","reply_markup":kb})
       else:
         Bot("sendMessage",{"chat_id":chatID,"text":r.listempty.format(text),"reply_to_message_id":message.id,"parse_mode":"markdown"})
@@ -166,7 +166,7 @@ def gpcmd(client, message,redis):
           Bot("sendMessage",{"chat_id":chatID,"text":r.NoMember,"reply_to_message_id":message.id,"parse_mode":"html"})
         if (GetGprank == "left" or GetGprank == "kicked"):
           Bot("sendMessage",{"chat_id":chatID,"text":r.haveKick,"reply_to_message_id":message.id,"parse_mode":"html"})
-        elif (GetGprank == "member" or GetGprank == "restricted") and (Getrank is False or Getrank is 0):
+        elif (GetGprank == "member" or GetGprank == "restricted") and (Getrank == False or Getrank == 0):
           if redis.sismember("{}Nbot:{}:bans".format(BOT_ID,chatID),userId):
             send_msg("BNN",client, message,r.Dban,"bans",getUser,redis)
           else:
@@ -229,7 +229,7 @@ def gpcmd(client, message,redis):
         elif (GetGprank == "restricted"):
           send_msg("BNN",client, message,r.haveRc,"restricteds",getUser,redis)
           #Bot("sendMessage",{"chat_id":chatID,"text":r.haveRc,"reply_to_message_id":message.id,"parse_mode":"html"})
-        elif GetGprank == "member" and (Getrank is False or Getrank is 0):
+        elif GetGprank == "member" and (Getrank == False or Getrank == 0):
           if redis.sismember("{}Nbot:{}:restricteds".format(BOT_ID,chatID),userId):
             send_msg("BNN",client, message,r.Drestricted,"restricteds",getUser,redis)
           else:
@@ -324,7 +324,7 @@ def gpcmd(client, message,redis):
         userFn = getUser.first_name
         Getrank = isrank(redis,userId,chatID)
         if Getrank == "bot":return False
-        if (Getrank is False or Getrank is 0):
+        if (Getrank == False or Getrank == 0):
           BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
           if not redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userId):
             Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ غير مكتوم من المجموعة","reply_to_message_id":message.id,"parse_mode":"html"})
@@ -352,7 +352,7 @@ def gpcmd(client, message,redis):
         Getrank = isrank(redis,userId,chatID)
         Getrank = isrank(redis,userId,chatID)
         if Getrank == "bot":return False
-        if (Getrank is False or Getrank is 0):
+        if (Getrank == False or Getrank == 0):
           BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
           if redis.sismember(f"{BOT_ID}Nbot:{chatID}:muteusers",userId):
             Bot("sendMessage",{"chat_id":chatID,"text":f"🚹꒐ العضو : {BY}\n🚷꒐ بالفعل مكتوم من المجموعة","reply_to_message_id":message.id,"parse_mode":"html"})
@@ -460,7 +460,7 @@ def gpcmd(client, message,redis):
           userFn = getUser.first_name
           Rank = isrank(redis,userId,chatID)
           tx = ""
-          if (Rank is False or Rank is 0):
+          if (Rank == False or Rank == 0):
             BY = "<a href=\"tg://user?id={}\">{}</a>".format(userId,userFn)
             Bot("sendMessage",{"chat_id":chatID,"text":r.remallN.format(BY),"reply_to_message_id":message.id,"parse_mode":"html"})
             return 0
@@ -476,14 +476,14 @@ def gpcmd(client, message,redis):
           }
           i = 0
           for x in to_del_ranks[rank]:
-            if isrankDef(redis,userId,chatID,x) is str(x):
+            if isrankDef(redis,userId,chatID,x) == str(x):
               t = Grank(x,r)
               tx = tx+t+","
-              if x is "asudo":
+              if x == "asudo":
                  remasudo(redis,userId)
-              if x is "sudos":
+              if x == "sudos":
                  remsudos(redis,userId)
-              elif x is "malk":
+              elif x == "malk":
                 remrank(redis,x,userId,chatID,"one")
               else:
                 remrank(redis,x,userId,chatID,"array")

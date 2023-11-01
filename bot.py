@@ -69,7 +69,7 @@ def updateAuto(client, message,redis):
     c = importlib.import_module("lang.arcmd")
     r = importlib.import_module("lang.arreply")
     group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
-    if group is False and redis.get("{}Nbot:autoaddbot".format(BOT_ID)):
+    if group == False and redis.get("{}Nbot:autoaddbot".format(BOT_ID)):
         if redis.get("{}Nbot:autoaddbotN".format(BOT_ID)):
             auN = int(redis.get("{}Nbot:autoaddbotN".format(BOT_ID)))
         else:
@@ -112,7 +112,7 @@ def updateAuto2(client, message,redis):
     c = importlib.import_module("lang.arcmd")
     r = importlib.import_module("lang.arreply")
     group = redis.sismember("{}Nbot:groups".format(BOT_ID),chatID)
-    if group is True:
+    if group == True:
         if message.new_chat_member:
             if message.new_chat_member.user.is_bot and message.from_user.id != int(BOT_ID):
                 if redis.sismember("{}Nbot:Lbots".format(BOT_ID),chatID):

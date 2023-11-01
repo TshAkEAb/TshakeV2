@@ -588,7 +588,7 @@ def locks(client, message,redis):
         Bot("sendMessage",{"chat_id":chatID,"text":r.unADD.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
 
-    if re.search(c.Lkickban, text) and  (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator") :
+    if re.search(c.Lkickban, text) and  (rank == "sudo" or rank == "asudo" or rank == "sudos" or rank == "malk" or rank == "acreator") :
       R = text.split(" ")[1]
       get = redis.sismember("{}Nbot:kickban".format(BOT_ID),chatID)
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
@@ -598,7 +598,7 @@ def locks(client, message,redis):
       else:
          Bot("sendMessage",{"chat_id":chatID,"text":r.ADDed.format(BY,R),"reply_to_message_id":message.id,"parse_mode":"html","disable_web_page_preview":True})
 
-    if re.search(c.Ukickban, text) and  (rank is "sudo" or rank is "asudo" or rank is "sudos" or rank is "malk" or rank is "acreator"):
+    if re.search(c.Ukickban, text) and  (rank == "sudo" or rank == "asudo" or rank == "sudos" or rank == "malk" or rank == "acreator"):
       R = text.split(" ")[1]
       BY = "<a href=\"tg://user?id={}\">{}</a>".format(userID,userFN)
       get = redis.sismember("{}Nbot:kickban".format(BOT_ID),chatID)
