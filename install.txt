@@ -1,19 +1,22 @@
 echo -e "\e[96m____________________\n\__    ___/   _____/\n  |    |  \_____  \ \n  |    |  /        \ \n  |____| /_______  /\n                 \/\e[0m"
-echo -n "Downloading python3.8.." 
+echo -n "Downloading python3.10.." 
 sudo apt-get update -y &>/dev/null
 sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
 sudo apt-get update -y &>/dev/null
-sudo apt install python3.8 -y -y &>/dev/null
+sudo apt install python3.10 -y -y &>/dev/null
+sudo apt install python3.10-distutils
 sudo apt install python3-pip -y &>/dev/null
-sudo python3.8 -m pip install --upgrade pip &>/dev/null
-echo -e "\rDone download python3.8"
+sudo curl -O https://bootstrap.pypa.io/get-pip.py &>/dev/null
+sudo python3.10 get-pip.py &>/dev/null
+sudo python3.10 -m pip install --upgrade pip &>/dev/null
+echo -e "\rDone download python3.10"
 echo -n "Downloading libraries.." 
 sudo apt-get update -y &>/dev/null
 sudo apt --fix-broken install -y &>/dev/null
-sudo python3.8 -m pip install -U setuptools &>/dev/null
-sudo python3.8 -m pip install -U Pyrogram &>/dev/null
-sudo python3.8 -m pip install -U tgcrypto &>/dev/null
-sudo python3.8 -m pip install redis &>/dev/null
+sudo python3.10 -m pip install -U setuptools &>/dev/null
+sudo python3.10 -m pip install -U Pyrogram &>/dev/null
+sudo python3.10 -m pip install -U tgcrypto &>/dev/null
+sudo python3.10 -m pip install redis &>/dev/null
 sudo apt-get install redis-server -y &>/dev/null
 sudo systemctl enable redis-server.service -y &>/dev/null
 echo -e "\rDone download libraries"
